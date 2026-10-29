@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 50px;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo img {
+    height: 60px;
+}
+
+.lien-con {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.lien-con a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.lien-con a:hover {
+    color: #FFC107;
+}
+
+.lien-con .btn-con {
+    background-color: #0b2b4e;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.lien-con .btn-con:hover {
+    background-color: #123d6e;
+    color: white;
+}
+
+#hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    background-image: url('../img/home_cover.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+#hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+.hero-conteneur {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin-top: 150px;
+}
+
+.hero-conteneur h1 {
+    color: white;
+    font-size: 3.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-conteneur p {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    margin-top: 35px;
+}
+
+#btn-dem {
+    background-color: #FFC107;
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btn-dem:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
