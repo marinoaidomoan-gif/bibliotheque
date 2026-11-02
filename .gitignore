@@ -1,0 +1,20 @@
+# Fichiers sensibles
+.env
+.env.*
+!.env.example
+
+# Photos uploadees (couvertures) : seul le dossier est conserve
+assets/uploads/*
+!assets/uploads/couvertures/
+assets/uploads/couvertures/*
+!assets/uploads/couvertures/.gitkeep
+
+# Systeme / editeur
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+#Fichiers config 
+config.php
