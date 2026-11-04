@@ -649,3 +649,232 @@ body.page-leaving {
     .bento-wide, .bento-tall { grid-column: auto; grid-row: auto; }
     .book-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
 }
+
+/* ============================================================
+   11. FORMULAIRES, ALERTES, CONNEXION ET LAYOUT ADMIN
+   ============================================================ */
+
+/* ----- Formulaires ----- */
+.field { margin-bottom: var(--space-4); }
+.field label {
+    display: block;
+    font-weight: 600;
+    font-size: var(--fs-small);
+    margin-bottom: 6px;
+}
+
+/* Champ mot de passe avec bouton "œil" à droite */
+.input-wrap { position: relative; }
+.input-wrap .input { padding-right: 48px; }
+.input-toggle {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.input-toggle:hover,
+.input-toggle[aria-pressed="true"] { color: var(--primary); }
+
+.btn-block { width: 100%; padding: 13px 20px; font-size: 1rem; }
+
+/* ----- Messages ----- */
+.alert {
+    padding: 12px 14px;
+    margin-bottom: var(--space-4);
+    font-size: var(--fs-small);
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+.alert-danger  { background: rgba(227, 0, 15, 0.10); border-color: rgba(227, 0, 15, 0.35); color: var(--danger); }
+.alert-success { background: rgba(21, 128, 61, 0.12); border-color: rgba(21, 128, 61, 0.35); color: var(--success); }
+
+/* ----- Page de connexion ----- */
+.login-page {
+    min-height: 100vh;
+    background-color: #111;
+    background-image: url('../img/home_cover.jpg');
+    background-size: cover;
+    background-position: center;
+}
+/* Voile sombre fixe sur l'image (sans flou, pour rester fluide) */
+.login-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--hero-overlay);
+    z-index: 0;
+}
+.login-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    /* mêmes variables que le header du site : les boutons ronds restent blancs */
+    --hc: #fff;
+    --hborder: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+.back-link { color: #fff; text-decoration: none; font-weight: 600; transition: color 0.3s; }
+.back-link:hover { color: var(--primary-soft); }
+.top-actions { display: flex; gap: 10px; }
+
+.login-wrap {
+    position: relative;
+    z-index: 1;
+    min-height: calc(100vh - 80px);
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+.login-card {
+    width: min(420px, 100%);
+    padding: 36px 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+.login-logo img { height: 64px; margin: 0 auto 16px; }
+.login-card h1 { font-size: 1.7rem; text-align: center; }
+.login-sub {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    margin: 6px 0 24px;
+}
+
+/* ----- Layout admin : menu latéral + zone principale ----- */
+.admin-shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 14px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    z-index: 200;
+    transition: transform 0.3s;
+}
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 22px;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.sidebar-brand img { height: 40px; }
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+.sidebar-link:hover { background: var(--surface-2); color: var(--text); }
+.sidebar-link.active { background: var(--primary); color: #fff; }
+.sidebar-link svg { flex-shrink: 0; }
+
+/* Bouton "Déconnexion" : un <button> qui ressemble aux liens du menu */
+.sidebar-link-btn {
+    width: 100%;
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+.sidebar-link-danger:hover { background: rgba(227, 0, 15, 0.10); color: var(--danger); }
+
+.sidebar-foot {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    font-size: var(--fs-small);
+    font-weight: 600;
+}
+.avatar {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+}
+
+.admin-main {
+    flex: 1;
+    min-width: 0;                 /* évite que de larges tableaux fassent déborder la page */
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+}
+.admin-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    background: var(--bg);        /* fond plein : pas d'effet de flou coûteux ici */
+    border-bottom: 1px solid var(--border);
+    --hc: var(--text);
+    --hborder: var(--border);
+}
+.admin-title { flex: 1; font-size: 1.4rem; }
+.topbar-actions { display: flex; gap: 8px; }
+.admin-content { flex: 1; padding: 28px; }
+
+.menu-btn { display: none; }      /* le bouton burger n'apparaît que sur mobile */
+.admin-overlay { display: none; }
+
+@media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); }      /* menu caché à gauche */
+    .sidebar.open { transform: none; }              /* ouvert par admin.js */
+    .admin-main { margin-left: 0; }
+    .menu-btn { display: inline-flex; }
+    .admin-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 150;
+    }
+    .admin-topbar { padding: 12px 16px; }
+    .admin-content { padding: 18px 16px; }
+    .login-top { padding: 14px 20px; }
+}
