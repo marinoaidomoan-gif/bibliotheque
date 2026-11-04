@@ -160,7 +160,9 @@
        ------------------------------------------------------------ */
     var header = document.querySelector('.site-header');
     var parallaxes = document.querySelectorAll('[data-parallax]');
-    var enAttente = false;   // évite de recalculer à chaque pixel de scroll
+    var enAttente = false;       // évite de recalculer à chaque pixel de scroll
+    var DECALAGE_MAX = 14;       // décalage maximum en px (l'image est zoomée pour ne pas montrer de bord vide)
+
 
     function majScroll() {
         enAttente = false;
@@ -170,16 +172,28 @@
             header.classList.toggle('scrolled', window.scrollY > 40);
         }
 
-        // Parallaxe : chaque élément [data-parallax="0.1"] se décale selon sa position
-        if (!reduireAnimations) {
-            var milieuEcran = window.innerHeight / 2;
-            parallaxes.forEach(function (el) {
-                var vitesse = parseFloat(el.getAttribute('data-parallax')) || 0.1;
-                var rect = el.getBoundingClientRect();
-                var decalage = (rect.top + rect.height / 2 - milieuEcran) * -vitesse;
-                el.style.setProperty('--py', decalage.toFixed(1) + 'px');
-            });
-        }
+        // Parallaxe des couvertures
+        if (reduireAnimations || parallaxes.length === 0) { return; }
+
+        var hauteurEcran = window.innerHeight;
+        var milieuEcran = hauteurEcran / 2;
+
+        // 1) On LIT d'abord toutes les positions...
+        var mesures = [];
+        parallaxes.forEach(function (el) {
+            mesures.push(el.getBoundingClientRect());
+        });
+
+        // 2) ...puis on ÉCRIT toutes les modifications (évite de recalculer la page à chaque image)
+        parallaxes.forEach(function (el, i) {
+            var rect = mesures[i];
+            if (rect.bottom < -50 || rect.top > hauteurEcran + 50) { return; }   // hors écran : on ignore
+
+            var vitesse = parseFloat(el.getAttribute('data-parallax')) || 0.04;
+            var decalage = (rect.top + rect.height / 2 - milieuEcran) * -vitesse;
+            decalage = Math.max(-DECALAGE_MAX, Math.min(DECALAGE_MAX, decalage));
+            el.style.setProperty('--py', decalage.toFixed(1) + 'px');
+        });
     }
 
     window.addEventListener('scroll', function () {
@@ -290,6 +304,11 @@
     window.App = {
         t: t,
         lang: function () { return langue; },
-        reveal: reveal
+        reveal: reveal,
+        // À appeler quand de nouvelles images [data-parallax] sont ajoutées à la page
+        refresh: function () {
+            parallaxes = document.querySelectorAll('[data-parallax]');
+            majScroll();
+        }
     };
 })();

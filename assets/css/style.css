@@ -446,13 +446,16 @@ nav .logo img {
     transform: translateY(var(--py, 0px)) scale(1.12);  /* le zoom évite les bords vides */
 }
 /* Si le livre n'a pas de couverture : grande initiale */
+/* Livre sans couverture : grande initiale sur un dégradé orange/rouge */
 .book-cover-empty {
     display: grid;
     place-items: center;
+}
+.book-initial {
     font-family: var(--font-display);
     font-size: 3.5rem;
     font-weight: 700;
-    color: var(--primary);
+    color: #fff;
 }
 
 .book-body { padding: var(--space-4); }
@@ -515,6 +518,30 @@ nav .logo img {
 }
 .footer-row a { text-decoration: none; }
 .footer-row a:hover { color: var(--primary); }
+
+/* Catégorie · année sous l'auteur */
+.book-meta {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+/* Formes des cartes "squelette" pendant le chargement */
+.skeleton-cover { aspect-ratio: 2 / 3; border-radius: 0; }
+.skeleton-line  { height: 14px; margin-bottom: 10px; }
+.skeleton-line.short { width: 60%; }
+
+/* Apparition douce des cartes de livres.
+   "backwards" (et non "both") : après l'animation, la carte garde son effet
+   de survol (translateY) sans être bloquée par l'animation. */
+.fade-in {
+    animation: cardIn 0.5s ease backwards;
+    animation-delay: var(--delay, 0s);
+}
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+}
 
 /* ============================================================
    8. EFFETS : GLOW, GLASS, BENTO GRID

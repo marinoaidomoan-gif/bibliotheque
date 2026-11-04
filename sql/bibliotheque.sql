@@ -34,8 +34,7 @@ CREATE TABLE livres (
     resume      TEXT          NULL,
     created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_livres_titre (titre),
-    INDEX idx_livres_categorie (categorie),
-    CONSTRAINT chk_livres_stock CHECK (stock >= 0)
+    INDEX idx_livres_categorie (categorie)
 ) ENGINE=InnoDB;
 
 -- ------------------------------------------------------------
@@ -59,16 +58,16 @@ CREATE TABLE emprunts (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_livre        INT UNSIGNED NOT NULL,
     id_membre       INT UNSIGNED NOT NULL,
-    date_emprunt    DATE NOT NULL DEFAULT (CURRENT_DATE),
+    date_emprunt    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     date_prevue     DATE NOT NULL,
     date_retour     DATE NULL,
     -- RESTRICT : impossible de supprimer un livre/membre qui a des emprunts
     CONSTRAINT fk_emprunts_livre  FOREIGN KEY (id_livre)  REFERENCES livres(id)  ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT fk_emprunts_membre FOREIGN KEY (id_membre) REFERENCES membres(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT chk_emprunts_dates CHECK (date_prevue >= date_emprunt),
     INDEX idx_emprunts_retour (date_retour),
     INDEX idx_emprunts_prevue (date_prevue)
 ) ENGINE=InnoDB;
+
 
 -- ------------------------------------------------------------
 -- Réservations (bonus)
@@ -92,9 +91,9 @@ CREATE VIEW v_livres AS
 SELECT
     l.*,
     (SELECT COUNT(*) FROM emprunts e
-      WHERE e.id_livre = l.id AND e.date_retour IS NULL)          AS nb_empruntes,
-    l.stock - (SELECT COUNT(*) FROM emprunts e
-      WHERE e.id_livre = l.id AND e.date_retour IS NULL)          AS disponibles
+      WHERE e.id_livre = l.id AND e.date_retour IS NULL)                  AS nb_empruntes,
+    CAST(l.stock AS SIGNED) - (SELECT COUNT(*) FROM emprunts e
+      WHERE e.id_livre = l.id AND e.date_retour IS NULL)                  AS disponibles
 FROM livres l;
 
 -- ============================================================
