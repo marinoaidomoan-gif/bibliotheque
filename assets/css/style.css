@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -109,8 +113,10 @@ nav .logo img {
 }
 
 #btn-dem {
+    display: inline-block;
+    text-decoration: none;
     background-color: #FFC107;
-    color: #e0e0e0;
+    color: #1a1a1a;
     font-size: 1.1rem;
     font-weight: bold;
     padding: 15px 40px;
@@ -119,8 +125,17 @@ nav .logo img {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
-
 #btn-dem:hover {
     background-color: #e0a800;
     transform: scale(1.05);
 }
+
+@media (max-width: 768px) {
+    header { padding: 15px 20px; }
+    .hero-conteneur { margin-top: 90px; }
+    .hero-conteneur h1 { font-size: 2.1rem; }
+    .hero-conteneur p  { font-size: 1rem; }
+    #hero { background-attachment: scroll; } /* "fixed" est mal géré sur mobile */
+}
+
+.hidden { display: none; }
