@@ -120,8 +120,13 @@ $hasLogo  = is_file(__DIR__ . '/' . $logoFile);
                    data-i18n="hero.discover">Découvrir le catalogue</a>
             </div>
 
-            <!-- Petite souris animée en bas du hero -->
-            <a href="#catalogue" class="scroll-cue" aria-label="Aller au catalogue"></a>
+            <!-- Simple flèche vers le bas (descend au catalogue) -->
+            <a href="#catalogue" class="scroll-cue" aria-label="Aller au catalogue">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </a>
         </section>
 
         <!-- ========== CATALOGUE ========== -->

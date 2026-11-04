@@ -85,10 +85,8 @@ body {
     background-color: var(--bg);
     color: var(--text);
     line-height: 1.6;
-    /* transition douce quand on change de thème */
     transition: background-color 0.3s, color 0.3s;
-    /* apparition de la page au chargement (transition de pages) */
-    animation: pageIn 0.5s ease both;
+    animation: pageIn 0.4s ease;
 }
 
 h1, h2, h3 {
@@ -244,18 +242,18 @@ img { max-width: 100%; display: block; }
     --hborder: rgba(255, 255, 255, 0.4);
     color: var(--hc);
 
-    transition: padding 0.3s, background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+    transition: padding 0.3s, background-color 0.3s, border-color 0.3s;
 }
 
 .site-header.scrolled {
     --hc: var(--text);
     --hborder: var(--border);
     padding: 10px 50px;
+    /* Fond assez opaque + flou léger = joli et rapide */
     background-color: var(--glass-bg);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    backdrop-filter: blur(16px) saturate(160%);   /* l'effet de verre dépoli */
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     border-bottom-color: var(--glass-border);
-    box-shadow: var(--shadow);
 }
 
 nav {
@@ -300,17 +298,15 @@ nav .logo img {
     background-image: url('../img/home_cover.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;                 /* effet parallaxe : l'image reste fixe */
+    /* Plus de "background-attachment: fixed" : c'était la principale cause de lenteur */
 }
 
-/* Voile sombre + léger flou par-dessus l'image */
+/* Voile sombre par-dessus l'image (sans flou : beaucoup plus rapide) */
 #hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background-color: var(--hero-overlay);
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
     z-index: 1;
 }
 
@@ -338,29 +334,24 @@ nav .logo img {
     margin: 35px 0 40px;
 }
 
-/* Petite souris animée en bas du hero */
 .scroll-cue {
     position: absolute;
     bottom: 28px;
     left: 50%;
-    width: 28px;
-    height: 44px;
-    margin-left: -14px;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    border-radius: 16px;
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
     z-index: 2;
+    transition: background-color 0.3s, border-color 0.3s;
 }
-.scroll-cue::after {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    width: 4px;
-    height: 8px;
-    margin-left: -2px;
-    border-radius: 2px;
-    background: var(--primary-soft);
-    animation: scrollDot 1.6s infinite;
+.scroll-cue:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 /* ============================================================
@@ -588,11 +579,6 @@ nav .logo img {
    ============================================================ */
 @keyframes pageIn   { from { opacity: 0; } to { opacity: 1; } }
 @keyframes shimmer  { to { background-position: -200% 0; } }
-@keyframes scrollDot {
-    0%   { opacity: 0; transform: translateY(0); }
-    30%  { opacity: 1; }
-    100% { opacity: 0; transform: translateY(16px); }
-}
 
 /* Sortie de page : app.js ajoute cette classe avant de changer de page */
 body.page-leaving {
@@ -628,7 +614,6 @@ body.page-leaving {
     .lien-con { gap: 8px; }
 
     .hero-conteneur p { font-size: 1rem; margin: 24px 0 32px; }
-    #hero { background-attachment: scroll; }     /* "fixed" est mal géré sur mobile */
     .section { padding: 64px 0; }
 }
 
