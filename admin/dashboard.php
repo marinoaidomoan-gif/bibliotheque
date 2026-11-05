@@ -97,7 +97,7 @@ require __DIR__ . '/../includes/header.php';
                 <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
             </svg>
         </h1>
-        <p class="text-muted">Voici les statistiques de la bibliothèque pour aujourd'hui.<br><?= e(fmt_date($aujourdhui)) ?></p>
+        <p class="text-muted"><span data-i18n="dash.hero_subtitle">Voici les statistiques de la bibliothèque pour aujourd'hui.</span><br><?= e(fmt_date($aujourdhui)) ?></p>
     </div>
 
     <!-- L'illustration qui remplit la zone de droite -->
@@ -190,7 +190,7 @@ require __DIR__ . '/../includes/header.php';
             </span>
         </div>
         <p class="bento-value" data-count="<?= $nbMembres ?>"><?= $nbMembres ?></p>
-        <p class="bento-sub">Inscrits</p>
+        <p class="bento-sub" data-i18n="dash.members_sub">Inscrits</p>
     </article>
 
     <article class="bento-card kpi-card glow reveal" style="--delay:.15s">
@@ -234,7 +234,7 @@ require __DIR__ . '/../includes/header.php';
                             <strong><?= e($r['titre']) ?></strong>
                             <small><?= e($r['membre']) ?> · <span data-i18n="dash.due_on">Prévu le</span> <?= e(fmt_date($r['date_prevue'])) ?></small>
                         </div>
-                        <span class="late-days"><?= (int) $r['jours'] ?> <span data-i18n="dash.days_late">j</span></span>
+                        <span class="late-days"><?= (int) $r['jours'] ?> <span data-i18n="dash.days">j</span></span>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -269,7 +269,7 @@ require __DIR__ . '/../includes/header.php';
     <article class="bento-card bento-wide reveal" style="--delay:.35s">
         <h2 class="bento-title">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="display:inline; vertical-align:text-bottom; margin-right:8px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Meilleurs Lecteurs
+            <span data-i18n="dash.top_members">Meilleurs Lecteurs</span>
         </h2>
 
         <?php if (!$topMembres): ?>
@@ -289,9 +289,9 @@ require __DIR__ . '/../includes/header.php';
                         <div class="user-info">
                             <!-- On affiche uniquement le nom -->
                             <strong><?= e($m['nom']) ?></strong>
-                            <small>Membre actif</small>
+                            <small data-i18n="dash.member_active">Membre actif</small>
                         </div>
-                        <span class="user-count"><?= (int) $m['nb'] ?> prêts</span>
+                        <span class="user-count"><?= (int) $m['nb'] ?> <span data-i18n="dash.loans_count">prêts</span></span>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -309,7 +309,7 @@ require __DIR__ . '/../includes/header.php';
                 <div class="donut-chart" style="background: conic-gradient(<?= $conicGradient ?>);">
                     <div class="donut-inner">
                         <span class="donut-total"><?= $nbTitres ?></span>
-                        <span class="donut-label">Livres</span>
+                        <span class="donut-label" data-i18n="dash.books_count">Livres</span>
                     </div>
                 </div>
             <?php endif; ?>

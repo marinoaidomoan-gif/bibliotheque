@@ -91,6 +91,15 @@
             'admin.welcome': 'Bienvenue',
             'admin.menu': 'Menu',
 
+            'dash.hero_subtitle': "Voici les statistiques de la bibliothèque pour aujourd'hui.",
+            'dash.members_sub': 'Inscrits',
+            'dash.top_members': 'Meilleurs Lecteurs',
+            'dash.member_active': 'Membre actif',
+            'dash.loans_count': 'prêts',
+            'dash.days': 'j',
+            'dash.books_count': 'Livres',
+            'dash.days_late': 'j de retard', // Déjà existant mais on s'assure qu'il est là
+
             // ----- Tableau de bord, filtres, modales -----
             'dash.books': 'Livres au catalogue',
             'dash.copies': 'exemplaires',
@@ -181,6 +190,16 @@
             'dash.top': 'Most borrowed books',
             'dash.top_none': 'No loans recorded yet.',
             'dash.categories': 'Books by category',
+
+            'dash.hero_subtitle': "Here are the library statistics for today.",
+            'dash.members_sub': 'Registered',
+            'dash.top_members': 'Top Readers',
+            'dash.member_active': 'Active member',
+            'dash.loans_count': 'loans',
+            'dash.days': 'd',
+            'dash.books_count': 'Books',
+            'dash.days_late': 'days late',
+
             'admin.filter': 'Filter the table…',
             'admin.noresult': 'No results.',
             'modal.title': 'Confirmation',
