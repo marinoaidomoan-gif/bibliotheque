@@ -878,3 +878,116 @@ body.page-leaving {
     .admin-content { padding: 18px 16px; }
     .login-top { padding: 14px 20px; }
 }
+
+/* ============================================================
+   12. PAGES ADMIN : CARTES, FORMULAIRES, TABLEAUX
+   ============================================================ */
+
+/* Carte (bloc blanc/sombre avec bordure) */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-6);
+    margin-bottom: var(--space-6);
+}
+.card h2 { font-size: 1.25rem; margin-bottom: var(--space-4); }
+
+/* Formulaire sur 2 colonnes (1 seule sur mobile) */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--space-6);
+}
+.field-full { grid-column: 1 / -1; }
+textarea.input { min-height: 110px; resize: vertical; }
+select.input { cursor: pointer; }
+.field-hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+/* Case à cocher avec son texte */
+.field label.check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-weight: 400;
+}
+.form-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: var(--space-2); }
+
+/* Variantes de boutons */
+.btn-sm { padding: 6px 12px; font-size: 0.85rem; border-radius: 8px; }
+.btn-outline {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+    padding: 10px 18px;
+}
+.btn-outline.btn-sm { padding: 6px 12px; }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+.btn-danger { background: var(--danger); color: #fff; padding: 10px 18px; }
+.btn-danger.btn-sm { padding: 6px 12px; }
+.btn-danger:hover {
+    background: #BF000D;
+    box-shadow: 0 0 0 3px rgba(227, 0, 15, 0.25), 0 8px 24px rgba(227, 0, 15, 0.35);
+}
+
+/* Tableaux : défilement horizontal si l'écran est étroit */
+.table-wrap {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+.table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.table th,
+.table td {
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border);
+}
+.table th {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover { background: var(--surface-2); }
+.table-actions { display: flex; gap: 6px; white-space: nowrap; }
+.row-late td:first-child { box-shadow: inset 3px 0 0 var(--danger); }   /* liseré rouge = retard */
+
+/* Miniature de couverture */
+.thumb { width: 40px; height: 56px; object-fit: cover; border-radius: 6px; background: var(--surface-2); }
+.thumb-empty {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 56px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    color: var(--primary);
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+td .thumb { display: block; }
+
+/* Barre au-dessus d'un tableau : titre à gauche, filtres à droite */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+.toolbar h2 { font-size: 1.15rem; }
+
+.alert ul { margin: 6px 0 0 18px; }
+a.pill { text-decoration: none; }
+
+@media (max-width: 700px) {
+    .form-grid { grid-template-columns: 1fr; }
+}

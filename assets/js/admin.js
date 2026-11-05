@@ -50,4 +50,18 @@
             bouton.setAttribute('aria-pressed', String(afficher));
         });
     });
+
+    /* ------------------------------------------------------------
+       3. CONFIRMATION AVANT UNE ACTION SENSIBLE
+       Tout formulaire avec data-confirm="Message ?" demande une
+       confirmation avant d'être envoyé (suppression, retour…).
+       (À l'étape 6, la boîte du navigateur sera remplacée par une
+       modale animée.)
+       ------------------------------------------------------------ */
+    document.addEventListener('submit', function (e) {
+        var message = e.target.getAttribute && e.target.getAttribute('data-confirm');
+        if (message && !window.confirm(message)) {
+            e.preventDefault();   // annulé : le formulaire n'est pas envoyé
+        }
+    });
 })();
