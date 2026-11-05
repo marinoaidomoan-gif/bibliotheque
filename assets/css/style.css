@@ -1622,3 +1622,209 @@ body.modal-open { overflow: hidden; }   /* pas de défilement derrière une moda
     .login-brand img { height: 38px; }
     .login-bar .btn-icon { width: 42px; height: 42px; }
 }
+
+/* ============================================================
+   15. TABLEAU DE BORD PREMIUM (Hero, Typographie, Donut)
+   ============================================================ */
+
+/* --- Section Bienvenue (Hero) --- */
+.dash-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 40px;
+    margin-bottom: var(--space-4);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    min-height: 250px; /* Donne une bonne hauteur à la carte */
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 50%; /* Le texte prend la moitié gauche */
+    z-index: 2;
+}
+
+.hero-illustration {
+    flex: 1;
+    max-width: 50%; /* L'image prend la moitié droite (la zone jaune) */
+    height: 100%;
+    display: flex;
+    justify-content: flex-end; /* Colle l'image à droite */
+    align-items: center;
+}
+
+.hero-illustration svg {
+    width: 100%;
+    max-height: 250px; /* Ajuste la taille max */
+    object-fit: contain; /* Garde les proportions */
+}
+
+.dash-hero h1 {
+    font-size: 1.8rem;
+    font-family: var(--font-display);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.dash-hero h1 strong {
+    color: var(--primary);
+}
+
+/* Sur mobile, on empile le texte et l'image */
+@media (max-width: 768px) {
+    .dash-hero { 
+        flex-direction: column; 
+        text-align: center; 
+        padding: 24px; 
+        min-height: auto;
+    }
+    .hero-content {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    .hero-illustration { 
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+    }
+    .hero-illustration svg {
+        max-height: 180px;
+    }
+}
+
+/* --- Cartes KPIs (Retour au design uni propre) --- */
+.kpi-card {
+    background: var(--surface); /* On remet le fond uni d'origine */
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); /* Garde l'ombre douce pour le relief */
+}
+
+/* Icônes avec des couleurs de fond différentes */
+.bento-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    transition: transform 0.3s;
+}
+.kpi-card:hover .bento-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.icon-orange { background: rgba(211, 84, 0, 0.12); color: var(--primary); }
+.icon-teal   { background: rgba(16, 185, 129, 0.12); color: #10B981; }
+.icon-blue   { background: rgba(59, 130, 246, 0.12); color: #3B82F6; }
+.icon-red    { background: rgba(227, 0, 15, 0.12); color: var(--danger); }
+
+/* Typographie en arrière-plan */
+.bg-number {
+    position: absolute;
+    right: 10px;
+    bottom: -25px;
+    font-family: var(--font-display);
+    font-size: 7rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text);
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.3s;
+}
+.kpi-card:hover .bg-number { opacity: 0.05; }
+[data-theme="dark"] .bg-number { opacity: 0.04; }
+
+/* Titres des sections */
+.bento-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    font-family: var(--font-display);
+    margin-bottom: var(--space-4);
+    color: var(--text);
+}
+
+/* --- Graphique Donut --- */
+.donut-layout { display: flex; align-items: center; gap: 32px; margin-top: auto; margin-bottom: auto;}
+.donut-chart {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    mask: radial-gradient(transparent 55%, black 56%);
+    -webkit-mask: radial-gradient(transparent 55%, black 56%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+.donut-inner {
+    mask: none; -webkit-mask: none;
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--surface); width: 80px; height: 80px; border-radius: 50%;
+    z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.donut-total { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.donut-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+
+.donut-legend { list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.donut-legend li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 500; }
+.donut-legend .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend strong { margin-left: auto; font-family: var(--font-display); font-size: 1rem; }
+
+@media (max-width: 768px) {
+    .donut-layout { flex-direction: column; gap: 20px; }
+    .donut-legend { width: 100%; }
+}
+
+/* --- Listes (Top Livres, Top Membres, Retards) --- */
+.top-item, .late-item, .user-item {
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: background 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.top-item:hover, .late-item:hover, .user-item:hover {
+    background: var(--surface-2);
+    transform: translateX(4px); /* Petit effet de glissement vers la droite */
+}
+
+/* Spécifique Top Membres */
+.user-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: #fff; font-weight: 700; font-size: 1rem;
+    flex-shrink: 0;
+}
+.user-info { flex: 1; display: flex; flex-direction: column; }
+.user-info strong { font-size: 0.9rem; color: var(--text); }
+.user-info small { font-size: 0.75rem; color: var(--text-muted); }
+.user-count {
+    background: var(--surface-2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Spécifique Top Livres */
+.top-info { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.top-info strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.9rem; }
+.top-info small { color: var(--text-muted); font-size: 0.8rem; }
+
+/* Spécifique Retards */
+.late-item { justify-content: space-between; border: 1px solid rgba(227, 0, 15, 0.1); }
+.late-days { background: var(--danger); color: white; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; }
