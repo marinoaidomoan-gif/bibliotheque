@@ -390,10 +390,12 @@ render_flash();   // messages "Livre ajouté", etc.
 <!-- ========== TABLEAU DES LIVRES ========== -->
 <div class="toolbar">
     <h2><?= count($livres) ?> livre(s)</h2>
+    <input type="search" class="input toolbar-search" data-table-filter="#table-livres"
+           data-i18n-placeholder="admin.filter" placeholder="Filtrer le tableau…" aria-label="Filtrer le tableau">
 </div>
 
 <div class="table-wrap">
-    <table class="table">
+    <table class="table" id="table-livres">
         <thead>
             <tr>
                 <th>Couv.</th><th>Titre</th><th>Auteur</th><th>Catégorie</th>

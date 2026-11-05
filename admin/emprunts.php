@@ -271,10 +271,13 @@ render_flash();
             <a href="emprunts.php?statut=<?= e($cle) ?>" class="pill<?= $filtre === $cle ? ' active' : '' ?>"><?= e($libelle) ?></a>
         <?php endforeach; ?>
     </div>
+
+    <input type="search" class="input toolbar-search" data-table-filter="#table-emprunts"
+           data-i18n-placeholder="admin.filter" placeholder="Filtrer le tableau…" aria-label="Filtrer le tableau">
 </div>
 
 <div class="table-wrap">
-    <table class="table">
+    <table class="table" id="table-emprunts">
         <thead>
             <tr>
                 <th>Livre</th><th>Membre</th><th>Emprunté le</th><th>Retour prévu</th>

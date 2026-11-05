@@ -181,10 +181,12 @@ render_flash();
 
 <div class="toolbar">
     <h2><?= count($membres) ?> membre(s)</h2>
+    <input type="search" class="input toolbar-search" data-table-filter="#table-membres"
+           data-i18n-placeholder="admin.filter" placeholder="Filtrer le tableau…" aria-label="Filtrer le tableau">
 </div>
 
 <div class="table-wrap">
-    <table class="table">
+    <table class="table" id="table-livres">
         <thead>
             <tr>
                 <th>Nom</th><th>E-mail</th><th>Téléphone</th><th>Inscrit le</th>

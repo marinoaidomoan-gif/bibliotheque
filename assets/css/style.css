@@ -991,3 +991,161 @@ a.pill { text-decoration: none; }
 @media (max-width: 700px) {
     .form-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   13. TABLEAU DE BORD, MODALES, FINITIONS ADMIN
+   ============================================================ */
+
+/* Menu latéral défilable si l'écran est peu haut (le bouton Déconnexion reste accessible) */
+.sidebar { overflow-y: auto; }
+
+/* Formulaire de déconnexion de la barre du haut */
+.logout-form { display: flex; }
+
+/* Champ de filtre au-dessus des tableaux */
+.toolbar-search { width: min(300px, 100%); }
+
+body.modal-open { overflow: hidden; }   /* pas de défilement derrière une modale */
+
+/* ----- Tableau de bord ----- */
+.dash-hello { margin-bottom: var(--space-4); font-size: 1.05rem; }
+
+.bento-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.bento-label { color: var(--text-muted); font-weight: 600; font-size: var(--fs-small); }
+.bento-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(211, 84, 0, 0.12);
+    color: var(--primary);
+}
+.bento-danger .bento-icon { background: rgba(227, 0, 15, 0.12); color: var(--danger); }
+.bento-sub { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+.bento-title { font-size: 1.05rem; margin-bottom: var(--space-4); }
+.bento-link {
+    display: inline-block;
+    margin-top: var(--space-4);
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+.bento-link:hover { text-decoration: underline; }
+.empty-ok { color: var(--success); font-weight: 600; }
+
+/* Liste des retards : chaque ligne a un liseré rouge vif */
+.late-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.late-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid rgba(227, 0, 15, 0.25);
+    border-left: 3px solid var(--danger);
+    border-radius: 10px;
+}
+.late-item strong { display: block; }
+.late-item small { color: var(--text-muted); }
+.late-days {
+    background: var(--danger);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+/* Top des livres empruntés */
+.top-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.top-item { display: flex; align-items: center; gap: 12px; }
+.top-rank {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--surface-2);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+.top-item:first-child .top-rank { background: var(--primary); color: #fff; }
+.top-info { flex: 1; min-width: 0; }
+.top-info strong, .top-info small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.top-info small { color: var(--text-muted); }
+.top-count { font-weight: 700; color: var(--primary); }
+
+/* Barres par catégorie : elles se remplissent quand la carte apparaît */
+.bar-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 28px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+.bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track {
+    height: 10px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.bar-fill {
+    display: block;
+    height: 100%;
+    width: var(--w, 0%);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-soft));
+}
+.js .bar-fill { width: 0; transition: width 0.9s ease 0.3s; }
+.js .reveal.visible .bar-fill { width: var(--w, 0%); }
+
+/* ----- Modale de confirmation ----- */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);      /* le fond de la page est flouté (verre dépoli) */
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.modal-backdrop.show { opacity: 1; }
+
+.modal {
+    width: min(440px, 100%);
+    padding: 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+    transform: translateY(14px) scale(0.96);
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.modal-backdrop.show .modal { transform: none; }
+.modal-title { font-size: 1.25rem; margin-bottom: 8px; }
+.modal-text { color: var(--text-muted); margin-bottom: var(--space-6); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+@media (max-width: 560px) {
+    .bar-row { grid-template-columns: 90px 1fr 28px; }
+}
