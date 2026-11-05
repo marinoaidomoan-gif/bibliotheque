@@ -697,59 +697,6 @@ body.page-leaving {
 .alert-danger  { background: rgba(227, 0, 15, 0.10); border-color: rgba(227, 0, 15, 0.35); color: var(--danger); }
 .alert-success { background: rgba(21, 128, 61, 0.12); border-color: rgba(21, 128, 61, 0.35); color: var(--success); }
 
-/* ----- Page de connexion ----- */
-.login-page {
-    min-height: 100vh;
-    background-color: #111;
-    background-image: url('../img/home_cover.jpg');
-    background-size: cover;
-    background-position: center;
-}
-/* Voile sombre fixe sur l'image (sans flou, pour rester fluide) */
-.login-page::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: var(--hero-overlay);
-    z-index: 0;
-}
-.login-top {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 50px;
-    /* mêmes variables que le header du site : les boutons ronds restent blancs */
-    --hc: #fff;
-    --hborder: rgba(255, 255, 255, 0.4);
-    color: #fff;
-}
-.back-link { color: #fff; text-decoration: none; font-weight: 600; transition: color 0.3s; }
-.back-link:hover { color: var(--primary-soft); }
-.top-actions { display: flex; gap: 10px; }
-
-.login-wrap {
-    position: relative;
-    z-index: 1;
-    min-height: calc(100vh - 80px);
-    display: grid;
-    place-items: center;
-    padding: 20px;
-}
-.login-card {
-    width: min(420px, 100%);
-    padding: 36px 32px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-}
-.login-logo img { height: 64px; margin: 0 auto 16px; }
-.login-card h1 { font-size: 1.7rem; text-align: center; }
-.login-sub {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: var(--fs-small);
-    margin: 6px 0 24px;
-}
 
 /* ----- Layout admin : menu latéral + zone principale ----- */
 .admin-shell { display: flex; min-height: 100vh; }
@@ -876,7 +823,6 @@ body.page-leaving {
     }
     .admin-topbar { padding: 12px 16px; }
     .admin-content { padding: 18px 16px; }
-    .login-top { padding: 14px 20px; }
 }
 
 /* ============================================================
@@ -1148,4 +1094,206 @@ body.modal-open { overflow: hidden; }   /* pas de défilement derrière une moda
 
 @media (max-width: 560px) {
     .bar-row { grid-template-columns: 90px 1fr 28px; }
+}
+
+/* ============================================================
+   14. PAGE DE CONNEXION (refonte : panneau, carte, illustrations)
+   ============================================================ */
+
+/* Fond : ta photo + voile sombre (sans flou : plus rapide) */
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background-color: #111;                       /* couleur de secours si l'image manque */
+    background-image: url('../img/home_cover.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.login-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--hero-overlay);
+    z-index: 0;
+}
+
+/* Grand panneau arrondi. Les variables servent aussi aux illustrations (SVG). */
+.login-panel {
+    --panel: #F7F5F2;       /* fond du panneau (crème) */
+    --card: #FFFFFF;        /* fond de la carte */
+    --field: #F7F5F2;       /* fond des champs */
+    --yellow: #FFDD94;      /* blocs jaunes des illustrations */
+    --art-red: #F26B5B;     /* couverture du livre */
+
+    /* couleurs lues par les boutons ronds (.btn-icon) */
+    --hc: var(--text);
+    --hborder: var(--text);
+
+    position: relative;
+    z-index: 1;
+    width: min(1100px, 100%);
+    min-height: 640px;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 48px;
+    overflow: hidden;               /* les illustrations ne dépassent pas du panneau */
+    color: var(--text);
+    background: color-mix(in srgb, var(--panel) 65%, transparent);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-radius: 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+[data-theme="dark"] .login-panel {
+    --panel: #303036;
+    --card: #1C1C1F;
+    --field: #0F0F11;
+    --yellow: #D9A441;
+    --hborder: var(--border);
+
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* Barre du haut */
+.login-bar {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+.login-brand img { height: 46px; }
+.login-brand span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+.login-actions { display: flex; gap: 10px; }
+
+/* Boutons ronds (langue, thème, retour au site) */
+.login-bar .btn-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+/* Bouton rond plein (comme celui en noir de la maquette) */
+.btn-solid {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+.btn-icon.btn-solid:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+/* Zone centrale : la carte est centrée */
+.login-main {
+    position: relative;
+    z-index: 2;                      /* la carte passe devant les illustrations */
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 24px 0 48px;
+}
+.login-card {
+    width: min(410px, 100%);
+    padding: 32px;
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+.login-card h1 {
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
+.login-sub {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    margin-bottom: 24px;
+}
+
+/* Champs arrondis avec icône à gauche */
+.login-card .field { margin-bottom: 14px; }
+.login-card .input {
+    background: var(--field);
+    border-radius: 14px;
+    padding: 15px 18px;
+}
+.input-wrap.has-icon .input { padding-left: 50px; }
+.input-ico {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    color: var(--text);
+    pointer-events: none;            /* le clic traverse l'icône et atteint le champ */
+}
+
+/* Gros bouton orange */
+.btn-xl {
+    font-size: 1.1rem;
+    padding: 15px 20px;
+    border-radius: 14px;
+}
+.login-note {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 18px;
+}
+
+/* Illustrations : posées en bas du panneau, derrière la carte */
+.login-art {
+    position: absolute;
+    bottom: 34px;
+    z-index: 1;
+    height: auto;
+    pointer-events: none;
+}
+.login-art-left  { left: 4%;  width: min(330px, 31%); }
+.login-art-right { right: 4%; width: min(280px, 26%); }
+
+/* Couleurs des dessins (voir includes/login-art.php) */
+.login-art .s {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+.login-art .fp { fill: var(--panel); }
+.login-art .fi { fill: currentColor; }
+.login-art .fy { fill: var(--yellow); }
+.login-art .fr { fill: var(--art-red); }
+
+/* Responsive : les illustrations disparaissent sur les écrans moyens et petits */
+@media (max-width: 980px) {
+    .login-art { display: none; }
+}
+@media (max-width: 560px) {
+    .login-page { padding: 12px; }
+    .login-panel { padding: 20px 18px; min-height: 0; border-radius: 24px; }
+    .login-card { padding: 24px 20px; }
+    .login-card h1 { font-size: 1.6rem; }
+    .login-brand span { font-size: 1.25rem; }
+    .login-brand img { height: 38px; }
+    .login-bar .btn-icon { width: 42px; height: 42px; }
 }
