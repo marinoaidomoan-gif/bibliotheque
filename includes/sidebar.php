@@ -1,10 +1,9 @@
 <?php
 /**
  * includes/sidebar.php — Menu latéral de l'admin
- * Utilise : $pageKey (élément actif) défini par la page, et $_SESSION['admin_nom'].
  */
 
-// Éléments du menu : clé, lien, clé de traduction, texte français, icône (SVG)
+// Tableau simple (sans sections)
 $menu = [
     ['dashboard', 'dashboard.php', 'admin.dashboard', 'Tableau de bord',
         '<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>'],
@@ -21,52 +20,61 @@ $initiale = mb_strtoupper(mb_substr($nomAdmin, 0, 1));
 ?>
 <aside class="sidebar" id="sidebar" aria-label="Menu d'administration">
 
-    <!-- Logo / nom -->
-    <a href="dashboard.php" class="sidebar-brand">
-        <?php if (!empty($hasLogo)): ?>
-            <img src="<?= e($logoFile) ?>" alt="">
-        <?php endif; ?>
-        <span>UATM GASA</span>
-    </a>
+    <!-- En-tête de la sidebar : Logo + Bouton réduire -->
+    <div class="sidebar-header">
+        <a href="dashboard.php" class="sidebar-brand">
+            <?php if (!empty($hasLogo)): ?>
+                <img src="<?= e($logoFile) ?>" alt="Logo">
+            <?php endif; ?>
+            <span class="brand-text">UATM GASA</span>
+        </a>
+        
+        <!-- Le bouton est maintenant indépendant du flex du header -->
+        <button type="button" class="sidebar-collapse-btn" id="toggle-sidebar" aria-label="Réduire le menu">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+    </div>
 
-    <!-- Navigation principale -->
+    <!-- Profil Utilisateur -->
+    <div class="sidebar-profile">
+        <div class="profile-avatar"><?= e($initiale) ?></div>
+        <div class="profile-info">
+            <strong><?= e($nomAdmin) ?></strong>
+            <span>Administrateur</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
     <nav class="sidebar-nav">
         <?php foreach ($menu as [$cle, $lien, $i18n, $texte, $icone]): ?>
             <a href="<?= e($lien) ?>" class="sidebar-link<?= $pageKey === $cle ? ' active' : '' ?>"
                <?= $pageKey === $cle ? 'aria-current="page"' : '' ?>>
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?= $icone ?></svg>
-                <span data-i18n="<?= e($i18n) ?>"><?= e($texte) ?></span>
+                <span class="link-text" data-i18n="<?= e($i18n) ?>"><?= e($texte) ?></span>
             </a>
         <?php endforeach; ?>
     </nav>
 
-    <!-- Bas du menu : site public, utilisateur, déconnexion -->
+    <!-- Bas de la Sidebar -->
     <div class="sidebar-foot">
         <a href="../index.php" class="sidebar-link" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
             </svg>
-            <span data-i18n="admin.viewsite">Voir le site</span>
+            <span class="link-text" data-i18n="admin.viewsite">Voir le site</span>
         </a>
 
-        <div class="sidebar-user">
-            <span class="avatar" aria-hidden="true"><?= e($initiale) ?></span>
-            <span><?= e($nomAdmin) ?></span>
-        </div>
-
-        <!-- Déconnexion : formulaire POST + jeton CSRF (traité par login.php) -->
         <form method="post" action="login.php">
             <input type="hidden" name="action" value="logout">
             <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-            <button type="submit" class="sidebar-link sidebar-link-btn sidebar-link-danger">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <button type="submit" class="sidebar-link sidebar-link-danger">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
                 </svg>
-                <span data-i18n="admin.logout">Déconnexion</span>
+                <span class="link-text" data-i18n="admin.logout">Déconnexion</span>
             </button>
         </form>
     </div>

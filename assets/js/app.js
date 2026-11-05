@@ -414,4 +414,26 @@
             majScroll();
         }
     };
+
+        /* ------------------------------------------------------------
+       10. RÉDUIRE / AGRANDIR LA SIDEBAR (Desktop)
+       ------------------------------------------------------------ */
+    var toggleBtn = document.getElementById('toggle-sidebar');
+    var sidebar = document.getElementById('sidebar');
+    
+    if (toggleBtn && sidebar) {
+        // Vérifier si l'état avait été sauvegardé (optionnel)
+        if (lire('sidebar_collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+            document.body.classList.add('sidebar-collapsed');
+        }
+
+        toggleBtn.addEventListener('click', function () {
+            var isCollapsed = sidebar.classList.toggle('collapsed');
+            document.body.classList.toggle('sidebar-collapsed');
+            
+            // Sauvegarder le choix de l'utilisateur
+            ecrire('sidebar_collapsed', isCollapsed);
+        });
+    }
 })();
