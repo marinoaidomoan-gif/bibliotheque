@@ -87,7 +87,30 @@
             'admin.logout': 'Déconnexion',
             'admin.viewsite': 'Voir le site',
             'admin.welcome': 'Bienvenue',
-            'admin.menu': 'Menu'
+            'admin.menu': 'Menu',
+
+            // ----- Tableau de bord, filtres, modales -----
+            'dash.books': 'Livres au catalogue',
+            'dash.copies': 'exemplaires',
+            'dash.members': 'Membres inscrits',
+            'dash.loans': 'Emprunts en cours',
+            'dash.loans_sub': 'livres actuellement sortis',
+            'dash.late': 'Retards',
+            'dash.late_sub': 'à relancer',
+            'dash.late_title': 'Emprunts en retard',
+            'dash.late_none': 'Aucun retard : tout est à jour.',
+            'dash.days_late': 'j de retard',
+            'dash.due_on': 'Prévu le',
+            'dash.see_all': 'Voir tous les retards',
+            'dash.top': 'Livres les plus empruntés',
+            'dash.top_none': 'Aucun emprunt enregistré.',
+            'dash.categories': 'Livres par catégorie',
+            'admin.filter': 'Filtrer le tableau…',
+            'admin.noresult': 'Aucun résultat.',
+            'modal.title': 'Confirmation',
+            'modal.cancel': 'Annuler',
+            'modal.confirm': 'Confirmer',
+            'modal.delete': 'Supprimer'
         },
         en: {
             'nav.catalogue': 'Catalogue',
@@ -136,7 +159,30 @@
             'admin.logout': 'Log out',
             'admin.viewsite': 'View site',
             'admin.welcome': 'Welcome',
-            'admin.menu': 'Menu'
+            'admin.menu': 'Menu',
+
+            // ----- Dashboard, filters, modals -----
+            'dash.books': 'Books in catalogue',
+            'dash.copies': 'copies',
+            'dash.members': 'Registered members',
+            'dash.loans': 'Ongoing loans',
+            'dash.loans_sub': 'books currently out',
+            'dash.late': 'Overdue',
+            'dash.late_sub': 'to follow up',
+            'dash.late_title': 'Overdue loans',
+            'dash.late_none': 'No overdue loans: all clear.',
+            'dash.days_late': 'days late',
+            'dash.due_on': 'Due',
+            'dash.see_all': 'See all overdue loans',
+            'dash.top': 'Most borrowed books',
+            'dash.top_none': 'No loans recorded yet.',
+            'dash.categories': 'Books by category',
+            'admin.filter': 'Filter the table…',
+            'admin.noresult': 'No results.',
+            'modal.title': 'Confirmation',
+            'modal.cancel': 'Cancel',
+            'modal.confirm': 'Confirm',
+            'modal.delete': 'Delete'
         }
     };
 
