@@ -1,20 +1,9 @@
 <?php
 /**
- * includes/header.php — Début du layout admin (ouvre la page, le menu et la zone de contenu)
- *
- * Utilisation dans chaque page admin :
- *
- *   require_once __DIR__ . '/../config.php';
- *   $pageTitle    = 'Livres';          // titre affiché en haut
- *   $pageTitleKey = 'admin.books';     // clé de traduction (facultatif)
- *   $pageKey      = 'livres';          // élément du menu à mettre en surbrillance
- *   require __DIR__ . '/../includes/header.php';
- *   ... contenu de la page ...
- *   require __DIR__ . '/../includes/footer.php';
+ * includes/header.php — Début du layout admin
  */
-
 require_once __DIR__ . '/../config.php';
-require_admin();   // protège TOUTE page qui inclut ce header : sans connexion → login.php
+require_admin();
 
 $pageTitle    = $pageTitle    ?? 'Administration';
 $pageTitleKey = $pageTitleKey ?? '';
@@ -45,31 +34,43 @@ $hasLogo  = is_file(__DIR__ . '/../admin/' . $logoFile);
 
     <?php require __DIR__ . '/sidebar.php'; ?>
 
-    <!-- Voile sombre derrière le menu sur mobile (clic = fermer le menu) -->
+    <!-- Voile sombre derrière le menu sur mobile -->
     <div class="admin-overlay" data-sidebar-close></div>
 
     <div class="admin-main">
-        <!-- Barre du haut : bouton menu (mobile), titre de la page, langue et thème -->
+        
+        <!-- NOUVELLE TOPBAR "CARTE FLOTTANTE" -->
         <header class="admin-topbar">
-            <button type="button" class="btn btn-icon menu-btn" data-sidebar-toggle
-                    data-i18n-aria="admin.menu" aria-label="Menu" aria-expanded="false" aria-controls="sidebar">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" aria-hidden="true">
-                    <path d="M3 6h18M3 12h18M3 18h18"/>
+            
+            <!-- Gauche : Menu mobile + Titre -->
+            <div class="topbar-left">
+                <button type="button" class="btn btn-icon menu-btn" data-sidebar-toggle
+                        data-i18n-aria="admin.menu" aria-label="Menu" aria-expanded="false" aria-controls="sidebar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M3 6h18M3 12h18M3 18h18"/>
+                    </svg>
+                </button>
+
+                <h1 class="admin-title"<?= $pageTitleKey !== '' ? ' data-i18n="' . e($pageTitleKey) . '"' : '' ?>><?= e($pageTitle) ?></h1>
+            </div>
+
+            <!-- Centre : Barre de recherche style maquette -->
+            <div class="topbar-search">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                 </svg>
-            </button>
+                <input type="text" class="search-input" placeholder="Rechercher un livre, un membre..." aria-label="Rechercher">
+            </div>
 
-            <!-- data-i18n seulement si une clé existe (sinon le titre serait effacé) -->
-            <h1 class="admin-title"<?= $pageTitleKey !== '' ? ' data-i18n="' . e($pageTitleKey) . '"' : '' ?>><?= e($pageTitle) ?></h1>
-
+            <!-- Droite : Actions (Thème, Langue, Déconnexion) -->
             <div class="topbar-actions">
                 <?php require __DIR__ . '/toggles.php'; ?>
 
-                <!-- Bouton de déconnexion toujours visible (formulaire POST + jeton CSRF, traité par login.php) -->
                 <form method="post" action="login.php" class="logout-form">
                     <input type="hidden" name="action" value="logout">
                     <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-                    <button type="submit" class="btn btn-icon" title="Déconnexion"
+                    <button type="submit" class="btn-pill-action btn-danger-soft" title="Déconnexion"
                             data-i18n-aria="admin.logout" aria-label="Déconnexion">
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

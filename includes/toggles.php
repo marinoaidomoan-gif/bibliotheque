@@ -6,7 +6,7 @@
 ?>
 <button type="button" class="btn btn-icon" data-lang-toggle aria-label="Changer de langue">EN</button>
 
-<button type="button" class="btn btn-icon" data-theme-toggle aria-label="Changer de thème">
+<button type="button" class="btn-pill-action" data-theme-toggle aria-label="Changer de thème">
     <svg class="icon icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none"
          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
