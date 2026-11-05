@@ -63,7 +63,31 @@
             'book.unavailable': 'Indisponible',
             'common.search': 'Rechercher',
             'aria.lang': 'Changer de langue',
-            'aria.theme': 'Changer de thème'
+            'aria.theme': 'Changer de thème',
+
+            // ----- Connexion admin -----
+            'login.back': '← Retour au site',
+            'login.title': 'Espace administration',
+            'login.subtitle': 'Connectez-vous pour gérer la bibliothèque.',
+            'login.email': 'Adresse e-mail',
+            'login.password': 'Mot de passe',
+            'login.submit': 'Se connecter',
+            'login.show': 'Afficher le mot de passe',
+            'login.bye': 'Vous avez été déconnecté.',
+            'login.err.empty': 'Veuillez remplir tous les champs.',
+            'login.err.invalid': 'Adresse e-mail ou mot de passe incorrect.',
+            'login.err.blocked': 'Trop de tentatives. Réessayez dans une minute.',
+            'login.err.server': 'Erreur technique. Réessayez plus tard.',
+
+            // ----- Layout admin -----
+            'admin.dashboard': 'Tableau de bord',
+            'admin.books': 'Livres',
+            'admin.members': 'Membres',
+            'admin.loans': 'Emprunts',
+            'admin.logout': 'Déconnexion',
+            'admin.viewsite': 'Voir le site',
+            'admin.welcome': 'Bienvenue',
+            'admin.menu': 'Menu'
         },
         en: {
             'nav.catalogue': 'Catalogue',
@@ -88,7 +112,31 @@
             'book.unavailable': 'Unavailable',
             'common.search': 'Search',
             'aria.lang': 'Change language',
-            'aria.theme': 'Change theme'
+            'aria.theme': 'Change theme',
+
+            // ----- Admin login -----
+            'login.back': '← Back to site',
+            'login.title': 'Administration',
+            'login.subtitle': 'Sign in to manage the library.',
+            'login.email': 'Email address',
+            'login.password': 'Password',
+            'login.submit': 'Sign in',
+            'login.show': 'Show password',
+            'login.bye': 'You have been signed out.',
+            'login.err.empty': 'Please fill in all fields.',
+            'login.err.invalid': 'Incorrect email or password.',
+            'login.err.blocked': 'Too many attempts. Try again in a minute.',
+            'login.err.server': 'Technical error. Please try again later.',
+
+            // ----- Admin layout -----
+            'admin.dashboard': 'Dashboard',
+            'admin.books': 'Books',
+            'admin.members': 'Members',
+            'admin.loans': 'Loans',
+            'admin.logout': 'Log out',
+            'admin.viewsite': 'View site',
+            'admin.welcome': 'Welcome',
+            'admin.menu': 'Menu'
         }
     };
 
@@ -121,6 +169,11 @@
         // Placeholders des champs
         document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
             el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
+        });
+
+        // Libellés d'accessibilité (aria-label) traduits
+        document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+            el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
         });
 
         // Le bouton affiche la langue VERS laquelle on peut basculer
