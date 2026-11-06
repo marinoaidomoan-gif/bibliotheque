@@ -90,6 +90,8 @@
             'admin.viewsite': 'Voir le site',
             'admin.welcome': 'Bienvenue',
             'admin.menu': 'Menu',
+            'admin.search_placeholder': 'Rechercher un livre, un membre...',
+            'admin.role_admin': 'Administrateur',
 
             'dash.hero_subtitle': "Voici les statistiques de la bibliothèque pour aujourd'hui.",
             'dash.members_sub': 'Inscrits',
@@ -173,6 +175,8 @@
             'admin.viewsite': 'View site',
             'admin.welcome': 'Welcome',
             'admin.menu': 'Menu',
+            'admin.search_placeholder': 'Search for a book, a member...',
+            'admin.role_admin': 'Administrator',
 
             // ----- Dashboard, filters, modals -----
             'dash.books': 'Books in catalogue',

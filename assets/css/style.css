@@ -749,8 +749,8 @@ body.page-leaving {
 
 .sidebar-collapse-btn {
     position: absolute;
-    top: 28px; /* Aligné avec le logo */
-    right: -14px; /* Dépasse de moitié sur la bordure extérieure */
+    top: 600px; /* Aligné avec le logo */
+    right: 25px; /* Dépasse de moitié sur la bordure extérieure */
     
     width: 28px;
     height: 28px;
@@ -931,8 +931,8 @@ body.page-leaving {
 .sidebar.collapsed .sidebar-collapse-btn {
     transform: rotate(180deg);
     position: absolute;
-    top: 24px;
-    right: -14px;
+    top: 600px;
+    right: 25px;
     background: var(--surface-2);
 }
 

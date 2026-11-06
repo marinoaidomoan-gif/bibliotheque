@@ -42,7 +42,7 @@ $initiale = mb_strtoupper(mb_substr($nomAdmin, 0, 1));
         <div class="profile-avatar"><?= e($initiale) ?></div>
         <div class="profile-info">
             <strong><?= e($nomAdmin) ?></strong>
-            <span>Administrateur</span>
+            <span data-i18n="admin.role_admin">Administrateur</span>
         </div>
     </div>
 

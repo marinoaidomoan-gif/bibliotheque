@@ -18,7 +18,7 @@ $hasLogo  = is_file(__DIR__ . '/../admin/' . $logoFile);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <title><?= e($pageTitle) ?> — <?= e(APP_NAME) ?></title>
+    <title><?= e($pageTitle) ?> - <?= e(APP_NAME) ?></title>
     <link rel="icon" href="<?= $hasLogo ? e($logoFile) : 'data:,' ?>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,7 +60,10 @@ $hasLogo  = is_file(__DIR__ . '/../admin/' . $logoFile);
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                 </svg>
-                <input type="text" class="search-input" placeholder="Rechercher un livre, un membre..." aria-label="Rechercher">
+                <input type="text" class="search-input" 
+                    placeholder="Rechercher un livre, un membre..." 
+                    data-i18n-placeholder="admin.search_placeholder" 
+                    aria-label="Rechercher">
             </div>
 
             <!-- Droite : Actions (Thème, Langue, Déconnexion) -->
