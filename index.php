@@ -129,6 +129,90 @@ $hasLogo  = is_file(__DIR__ . '/' . $logoFile);
             </a>
         </section>
 
+        <!-- ========== COMMENT EMPRUNTER EN 3 ÉTAPES ========== -->
+        <section id="emprunter" class="section steps-section">
+            <div class="container">
+
+                <!-- Titre de la section -->
+                <div class="section-head reveal">
+                    <div>
+                        <span class="eyebrow" data-i18n="steps.eyebrow">Mode d’emploi</span>
+                        <h2 data-i18n="steps.title">Comment emprunter en 3 étapes</h2>
+                    </div>
+                </div>
+
+                <!-- 3 cartes. Chaque carte = un ONGLET coloré (numéro + titre, avec une pointe vers le bas)
+                     posé sur une CARTE blanche (icône | trait vertical | texte).
+                     La couleur de chaque carte est définie en CSS (--c). -->
+                <ol class="steps">
+
+                    <!-- Étape 1 : chercher -->
+                    <li class="reveal" style="--delay:0s">
+                        <article class="step-card">
+                            <h3 class="step-tab">
+                                <span class="step-n" aria-hidden="true">1</span>
+                                <span data-i18n="steps.1.title">Cherchez</span>
+                            </h3>
+                            <!-- "glow" : bordure lumineuse au survol -->
+                            <div class="step-body glow">
+                                <span class="step-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor"
+                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+                                    </svg>
+                                </span>
+                                <p class="step-text" data-i18n="steps.1.text">Trouvez un ouvrage par titre, auteur ou catégorie grâce au catalogue.</p>
+                            </div>
+                        </article>
+                    </li>
+
+                    <!-- Étape 2 : vérifier la disponibilité -->
+                    <li class="reveal" style="--delay:.1s">
+                        <article class="step-card">
+                            <h3 class="step-tab">
+                                <span class="step-n" aria-hidden="true">2</span>
+                                <span data-i18n="steps.2.title">Vérifiez</span>
+                            </h3>
+                            <div class="step-body glow">
+                                <span class="step-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor"
+                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/>
+                                    </svg>
+                                </span>
+                                <p class="step-text" data-i18n="steps.2.text">Le badge indique si au moins un exemplaire est disponible.</p>
+                            </div>
+                        </article>
+                    </li>
+
+                    <!-- Étape 3 : emprunter à l'accueil -->
+                    <li class="reveal" style="--delay:.2s">
+                        <article class="step-card">
+                            <h3 class="step-tab">
+                                <span class="step-n" aria-hidden="true">3</span>
+                                <span data-i18n="steps.3.title">Empruntez</span>
+                            </h3>
+                            <div class="step-body glow">
+                                <span class="step-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor"
+                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                    </svg>
+                                </span>
+                                <p class="step-text" data-i18n="steps.3.text">Présentez-vous à l’accueil de la bibliothèque : le bibliothécaire enregistre votre emprunt.</p>
+                            </div>
+                        </article>
+                    </li>
+                </ol>
+
+                <!-- Bouton vers le catalogue -->
+                <p class="steps-cta reveal">
+                    <a href="#catalogue" class="btn btn-primary btn-lg magnetic" data-i18n="steps.cta">Commencer ma recherche</a>
+                </p>
+            </div>
+        </section>
+
         <!-- ========== CATALOGUE ========== -->
         <section id="catalogue" class="section">
             <div class="container">

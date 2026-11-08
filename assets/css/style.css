@@ -1828,3 +1828,127 @@ body.modal-open { overflow: hidden; }   /* pas de défilement derrière une moda
 /* Spécifique Retards */
 .late-item { justify-content: space-between; border: 1px solid rgba(227, 0, 15, 0.1); }
 .late-days { background: var(--danger); color: white; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; }
+
+/* ============================================================
+   15. SECTION "COMMENT EMPRUNTER EN 3 ÉTAPES"
+   Cartes à onglet : un onglet coloré avec une pointe vers le bas,
+   posé sur une carte arrondie (icône | trait | texte).
+   ============================================================ */
+
+/* Moins d'espace en bas : la section Catalogue qui suit a déjà son propre espace en haut */
+.steps-section { padding-bottom: 16px; }
+
+/* Les 3 cartes côte à côte */
+.steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 28px;
+}
+.steps > li { display: flex; }
+
+/* Une couleur par carte : orange, ambre, rouge vif (charte du prompt, sans bleu).
+   La variable --c est utilisée par l'onglet et par l'icône. */
+.steps > li:nth-child(1) { --c: var(--primary); }
+.steps > li:nth-child(2) { --c: #B7791F; }
+.steps > li:nth-child(3) { --c: var(--danger); }
+
+.step-card {
+    position: relative;
+    flex: 1;
+    padding-top: 36px;             /* place pour la moitié haute de l'onglet */
+    transition: transform 0.3s;
+}
+.step-card:hover { transform: translateY(-4px); }
+
+/* ----- L'onglet coloré ----- */
+.step-tab {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;                    /* au-dessus de la carte blanche */
+    width: 72%;
+    height: 54px;
+    padding-bottom: 18px;          /* le texte se centre dans la partie visible de l'onglet */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--c);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+/* Petite pointe vers le bas (un triangle dessiné avec des bordures) */
+.step-tab::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 9px solid transparent;
+    border-top-color: var(--c);
+    border-bottom: 0;
+}
+/* Numéro de l'étape dans un petit rond translucide */
+.step-n {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 0.8rem;
+}
+
+/* ----- La carte arrondie ----- */
+.step-body {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 140px;
+    padding: 40px 24px 26px;       /* le haut est plus grand : l'onglet et sa pointe empiètent dessus */
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+}
+.step-icon {
+    flex-shrink: 0;
+    display: grid;
+    color: var(--c);
+}
+/* Texte séparé de l'icône par un trait vertical */
+.step-text {
+    flex: 1;
+    min-width: 0;
+    padding-left: 18px;
+    border-left: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.steps-cta { text-align: center; margin-top: var(--space-8); }
+
+/* Tablette et mobile : une carte par ligne, centrées */
+@media (max-width: 980px) {
+    .steps {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        margin-inline: auto;
+    }
+}
+@media (max-width: 420px) {
+    .step-body { padding-inline: 18px; gap: 14px; }
+    .step-text { padding-left: 14px; }
+    .step-icon svg { width: 36px; height: 36px; }
+}
