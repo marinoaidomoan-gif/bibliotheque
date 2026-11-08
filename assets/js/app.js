@@ -123,7 +123,18 @@
             'modal.title': 'Confirmation',
             'modal.cancel': 'Annuler',
             'modal.confirm': 'Confirmer',
-            'modal.delete': 'Supprimer'
+            'modal.delete': 'Supprimer',
+
+            // ----- Section "Comment emprunter" -----
+            'steps.eyebrow': 'Mode d’emploi',
+            'steps.title': 'Comment emprunter en 3 étapes',
+            'steps.1.title': 'Cherchez',
+            'steps.1.text': 'Trouvez un ouvrage par titre, auteur ou catégorie grâce au catalogue.',
+            'steps.2.title': 'Vérifiez',
+            'steps.2.text': 'Le badge indique si au moins un exemplaire est disponible.',
+            'steps.3.title': 'Empruntez',
+            'steps.3.text': 'Présentez-vous à l’accueil de la bibliothèque : le bibliothécaire enregistre votre emprunt.',
+            'steps.cta': 'Commencer ma recherche'
         },
         en: {
             'nav.catalogue': 'Catalogue',
@@ -209,7 +220,18 @@
             'modal.title': 'Confirmation',
             'modal.cancel': 'Cancel',
             'modal.confirm': 'Confirm',
-            'modal.delete': 'Delete'
+            'modal.delete': 'Delete',
+
+            // ----- "How to borrow" section -----
+            'steps.eyebrow': 'How it works',
+            'steps.title': 'How to borrow in 3 steps',
+            'steps.1.title': 'Search',
+            'steps.1.text': 'Find a book by title, author or category in the catalogue.',
+            'steps.2.title': 'Check',
+            'steps.2.text': 'The badge shows whether at least one copy is available.',
+            'steps.3.title': 'Borrow',
+            'steps.3.text': 'Visit the library desk: the librarian records your loan.',
+            'steps.cta': 'Start searching'
         }
     };
 
