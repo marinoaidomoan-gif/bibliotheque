@@ -1,11 +1,13 @@
 /* ============================================================
-   catalogue.js — Recherche instantanée et filtres par catégorie
+   catalogue.js — Recherche instantanée, filtres, cartes "couverture"
+   et fenêtre (modale) de détails d'un livre
 
    - Appelle api/livres.php avec fetch() à chaque frappe (attente de 250 ms)
    - Annule la requête précédente (AbortController) : pas de réponse en retard
    - Affiche des "squelettes" pendant le chargement
    - Construit le DOM avec textContent : aucune donnée de la base n'est
      injectée en HTML brut (protection contre les failles XSS)
+   - Un clic sur une carte ouvre une modale avec les détails du livre
 
    Dépend de app.js (window.App) pour la traduction et la parallaxe.
    ============================================================ */
@@ -16,6 +18,9 @@
     const DEBOUNCE_MS = 250;     // délai d'attente après la dernière frappe
     const PAGE_SIZE = 24;        // livres par page
     const SKELETON_COUNT = 8;    // cartes "squelette" pendant le chargement
+
+    // Couleurs des couvertures sans image. Aucun bleu (charte du prompt).
+    const COVER_COLORS = ['#9E3B2C', '#2D6A57', '#85621F', '#B8470A', '#6B2D3C', '#3F5B3A', '#5A3E2B', '#A63D2F'];
 
     // ---- Éléments de la page (définis dans index.php) ----
     const grid = document.getElementById('book-grid');
@@ -34,6 +39,9 @@
     // Traduction : t('catalogue.page', {p: 1, n: 3}) → "Page 1 / 3"
     const t = (cle, variables) => (window.App ? window.App.t(cle, variables) : cle);
 
+    // L'utilisateur préfère-t-il moins d'animations ?
+    const reduireAnimations = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // ---- État courant du catalogue ----
     const state = {
         q: '',               // texte recherché
@@ -46,6 +54,7 @@
 
     let controller = null;       // permet d'annuler la requête en cours
     let debounceTimer = null;
+    let modalOuverte = false;    // une seule modale à la fois
 
     /* ------------------------------------------------------------
        Outils DOM
@@ -59,19 +68,71 @@
         return node;
     }
 
+    // Crée un élément traduit automatiquement par app.js (attribut data-i18n)
+    function elT(tag, className, cle) {
+        const node = el(tag, className, t(cle));
+        node.setAttribute('data-i18n', cle);
+        return node;
+    }
+
     function setHidden(node, hidden) {
         node.classList.toggle('hidden', hidden);
     }
 
-    // Dégradé stable (même titre = même couleur) pour les livres sans couverture.
-    // Teintes limitées à 0-40° (rouge → orange → jaune) : jamais de bleu.
-    function coverGradient(seed) {
+    // Couleur de couverture stable : un même titre a toujours la même couleur
+    function coverColor(seed) {
         let hash = 0;
         for (let i = 0; i < seed.length; i++) {
-            hash = (hash * 31 + seed.charCodeAt(i)) % 360;
+            hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;   // >>> 0 garde un nombre positif
         }
-        const teinte = hash % 40;
-        return `linear-gradient(160deg, hsl(${teinte} 75% 42%), hsl(${teinte + 10} 80% 18%))`;
+        return COVER_COLORS[hash % COVER_COLORS.length];
+    }
+
+    /* ------------------------------------------------------------
+       Couverture d'un livre (utilisée dans la grille ET dans la modale)
+       - avec image : l'image remplit la couverture
+       - sans image : couleur unie + titre en haut + auteur en bas
+       ------------------------------------------------------------ */
+
+    // Titre (haut) et auteur (bas) écrits sur une couverture sans image
+    function ajouterTexteCouverture(cover, book) {
+        const titre = el('span', 'cover-title', book.titre);
+        titre.setAttribute('aria-hidden', 'true');   // le titre est déjà lu ailleurs
+        const auteur = el('span', 'cover-author', book.auteur);
+        auteur.setAttribute('aria-hidden', 'true');
+        cover.appendChild(titre);
+        cover.appendChild(auteur);
+    }
+
+    function buildCover(book, grande) {
+        // "glow" : bordure lumineuse au survol (seulement sur les cartes de la grille)
+        const cover = el('div', grande ? 'book-cover book-cover-lg' : 'book-cover glow');
+        cover.style.setProperty('--cover', coverColor(book.titre));
+
+        if (book.couverture_url) {
+            const img = el('img');
+            img.src = book.couverture_url;
+            img.alt = book.titre;
+            img.loading = grande ? 'eager' : 'lazy';   // charge l'image seulement quand elle approche de l'écran
+            img.decoding = 'async';
+            if (!grande) img.setAttribute('data-parallax', '0.04');   // léger effet parallaxe (voir app.js)
+            img.addEventListener('error', () => {      // image introuvable : on retombe sur le texte
+                img.remove();
+                ajouterTexteCouverture(cover, book);
+            });
+            cover.appendChild(img);
+        } else {
+            ajouterTexteCouverture(cover, book);
+        }
+
+        // Pastille de disponibilité en haut à droite (cartes de la grille seulement).
+        // data-i18n : app.js la retraduit tout seul quand on change de langue.
+        if (!grande) {
+            const cle = book.disponible ? 'book.available' : 'book.unavailable';
+            const badge = elT('span', book.disponible ? 'badge badge-ok' : 'badge badge-no', cle);
+            cover.appendChild(badge);
+        }
+        return cover;
     }
 
     /* ------------------------------------------------------------
@@ -84,68 +145,38 @@
         for (let i = 0; i < SKELETON_COUNT; i++) {
             const card = el('div', 'book-card');
             card.appendChild(el('div', 'skeleton skeleton-cover'));
-            const body = el('div', 'book-body');
-            body.appendChild(el('div', 'skeleton skeleton-line'));
-            body.appendChild(el('div', 'skeleton skeleton-line short'));
-            card.appendChild(body);
+            const info = el('div', 'book-info');
+            info.appendChild(el('div', 'skeleton skeleton-line short'));
+            info.appendChild(el('div', 'skeleton skeleton-line'));
+            card.appendChild(info);
             frag.appendChild(card);
         }
         grid.replaceChildren(frag);
     }
 
-    // Couverture du livre : image, ou grande initiale sur fond coloré
-    function buildCover(book) {
-        const cover = el('div', 'book-cover');
-
-        function afficherInitiale() {
-            cover.classList.add('book-cover-empty');
-            cover.style.background = coverGradient(book.titre);
-            cover.prepend(el('span', 'book-initial', book.titre.charAt(0).toUpperCase()));
-        }
-
-        if (book.couverture_url) {
-            const img = el('img');
-            img.src = book.couverture_url;
-            img.alt = book.titre;
-            img.loading = 'lazy';                 // charge l'image seulement quand elle approche de l'écran
-            img.decoding = 'async';
-            img.setAttribute('data-parallax', '0.04');   // léger effet parallaxe (voir app.js)
-            img.addEventListener('error', () => {        // image introuvable : on retombe sur l'initiale
-                img.remove();
-                afficherInitiale();
-            });
-            cover.appendChild(img);
-        } else {
-            afficherInitiale();
-        }
-
-        // Badge de disponibilité en haut à droite de la couverture.
-        // data-i18n : app.js le retraduit tout seul quand on change de langue.
-        const badge = el('span', book.disponible ? 'badge badge-ok' : 'badge badge-no');
-        const cle = book.disponible ? 'book.available' : 'book.unavailable';
-        badge.setAttribute('data-i18n', cle);
-        badge.textContent = t(cle);
-        cover.appendChild(badge);
-
-        return cover;
-    }
-
-    // Une carte de livre
+    // Une carte de livre : couverture, puis catégorie / titre / auteur et année
     function buildBookCard(book, index) {
-        // "glow" = bordure lumineuse au survol (gérée par app.js)
         // "fade-in" = apparition douce, décalée carte après carte
-        const card = el('article', 'book-card glow fade-in');
+        const card = el('article', 'book-card fade-in');
+        card.dataset.id = String(book.id);           // sert à retrouver le livre au clic
         card.style.setProperty('--delay', `${Math.min(index, 8) * 0.05}s`);
-        card.appendChild(buildCover(book));
+        card.appendChild(buildCover(book, false));
 
-        const body = el('div', 'book-body');
-        body.appendChild(el('h3', null, book.titre));
-        body.appendChild(el('p', 'book-author', book.auteur));
+        const info = el('div', 'book-info');
+        if (book.categorie) info.appendChild(el('span', 'book-cat', book.categorie));
 
-        const meta = [book.categorie, book.annee].filter(Boolean).join(' · ');
-        if (meta) body.appendChild(el('p', 'book-meta', meta));
+        // Le titre est un vrai bouton : on peut l'atteindre au clavier (Tab) et l'activer (Entrée)
+        const h3 = el('h3');
+        const bouton = el('button', 'book-open', book.titre);
+        bouton.type = 'button';
+        bouton.setAttribute('aria-haspopup', 'dialog');
+        h3.appendChild(bouton);
+        info.appendChild(h3);
 
-        card.appendChild(body);
+        const sous = [book.auteur, book.annee].filter(Boolean).join(', ');
+        if (sous) info.appendChild(el('p', 'book-sub', sous));
+
+        card.appendChild(info);
         return card;
     }
 
@@ -168,10 +199,9 @@
         const frag = document.createDocumentFragment();
 
         // Pill "Tous" (traduite automatiquement par app.js grâce à data-i18n)
-        const tous = el('button', 'pill', t('catalogue.all'));
+        const tous = elT('button', 'pill', 'catalogue.all');
         tous.type = 'button';
         tous.dataset.value = '';
-        tous.setAttribute('data-i18n', 'catalogue.all');
         frag.appendChild(tous);
 
         liste.forEach((cat) => {
@@ -220,6 +250,167 @@
         const section = document.getElementById('catalogue');
         if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    /* ------------------------------------------------------------
+       MODALE DE DÉTAILS D'UN LIVRE
+       Fermeture : bouton croix, bouton "Fermer", touche Échap, clic à côté.
+       Accessibilité : le focus entre dans la modale, y reste (Tab), puis
+       revient sur la carte à la fermeture.
+       ------------------------------------------------------------ */
+    function openBookModal(book, declencheur) {
+        if (modalOuverte) return;
+        modalOuverte = true;
+        const precedent = declencheur || document.activeElement;
+
+        // Fond sombre + boîte de dialogue
+        const voile = el('div', 'modal-backdrop');
+        const boite = el('div', 'modal modal-book');
+        boite.setAttribute('role', 'dialog');
+        boite.setAttribute('aria-modal', 'true');
+        boite.setAttribute('aria-labelledby', 'book-modal-title');
+
+        // Bouton croix en haut à droite (le SVG est écrit en dur : aucune donnée de la base)
+        const croix = el('button', 'modal-close');
+        croix.type = 'button';
+        croix.setAttribute('data-i18n-aria', 'modal.close');
+        croix.setAttribute('aria-label', t('modal.close'));
+        croix.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+            'stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+        boite.appendChild(croix);
+
+        // Deux colonnes : grande couverture à gauche, informations à droite
+        const colonnes = el('div', 'modal-book-grid');
+        colonnes.appendChild(buildCover(book, true));
+
+        const corps = el('div', 'modal-book-body');
+        if (book.categorie) corps.appendChild(el('span', 'modal-cat', book.categorie));
+
+        const titre = el('h2', 'modal-title', book.titre);
+        titre.id = 'book-modal-title';
+        corps.appendChild(titre);
+        corps.appendChild(el('p', 'modal-author', book.auteur));
+
+        // Année de publication : "Année : 1979"
+        if (book.annee) {
+            const meta = el('p', 'modal-meta');
+            meta.appendChild(elT('span', null, 'book.year'));
+            meta.appendChild(document.createTextNode(' : '));
+            meta.appendChild(el('strong', null, String(book.annee)));
+            corps.appendChild(meta);
+        }
+
+        // Disponibilité : pastille + "1 sur 3 exemplaire(s) disponible(s)"
+        const statut = el('div', 'modal-status');
+        const cleStatut = book.disponible ? 'book.available' : 'book.unavailable';
+        statut.appendChild(elT('span', book.disponible ? 'badge badge-ok' : 'badge badge-no', cleStatut));
+        const copies = el('span', 'text-muted');
+        const majCopies = () => {
+            copies.textContent = t('book.copies', { d: book.disponibles, s: book.stock });
+        };
+        majCopies();
+        statut.appendChild(copies);
+        corps.appendChild(statut);
+
+        // Résumé (ou message si le livre n'en a pas)
+        corps.appendChild(elT('h3', 'modal-sub', 'book.summary'));
+        if (book.resume) {
+            corps.appendChild(el('p', 'modal-summary', book.resume));
+        } else {
+            const vide = elT('p', 'modal-summary text-muted', 'book.nosummary');
+            corps.appendChild(vide);
+        }
+
+        // Rappel : l'emprunt se fait à l'accueil de la bibliothèque
+        corps.appendChild(elT('p', 'modal-hint', 'book.hint'));
+
+        // Boutons du bas
+        const actions = el('div', 'modal-actions modal-actions-start');
+        const comment = elT('button', 'btn btn-primary', 'book.howto');
+        comment.type = 'button';
+        const fermer2 = elT('button', 'btn btn-outline', 'modal.close');
+        fermer2.type = 'button';
+        actions.appendChild(comment);
+        actions.appendChild(fermer2);
+        corps.appendChild(actions);
+
+        colonnes.appendChild(corps);
+        boite.appendChild(colonnes);
+        voile.appendChild(boite);
+        document.body.appendChild(voile);
+        document.body.classList.add('modal-open');          // bloque le défilement de la page derrière
+
+        // Apparition animée (la classe "show" déclenche la transition CSS)
+        requestAnimationFrame(() => voile.classList.add('show'));
+        croix.focus();
+
+        // Fermeture. "apres" = action à faire une fois la modale disparue.
+        function fermer(apres) {
+            document.removeEventListener('keydown', clavier);
+            document.removeEventListener('langchange', majCopies);
+            voile.classList.remove('show');
+            document.body.classList.remove('modal-open');
+            modalOuverte = false;
+            setTimeout(() => {
+                voile.remove();
+                if (apres) {
+                    apres();
+                } else if (precedent && precedent.focus) {
+                    precedent.focus();       // le focus revient sur la carte d'où l'on venait
+                }
+            }, reduireAnimations ? 0 : 200);
+        }
+
+        // Clavier : Échap ferme, Tab reste à l'intérieur de la modale
+        function clavier(e) {
+            if (e.key === 'Escape') {
+                fermer();
+                return;
+            }
+            if (e.key !== 'Tab') return;
+
+            const focusables = boite.querySelectorAll('button, a[href]');
+            if (!focusables.length) return;
+            const premier = focusables[0];
+            const dernier = focusables[focusables.length - 1];
+
+            if (!boite.contains(document.activeElement)) {
+                e.preventDefault();
+                premier.focus();
+            } else if (e.shiftKey && document.activeElement === premier) {
+                e.preventDefault();
+                dernier.focus();
+            } else if (!e.shiftKey && document.activeElement === dernier) {
+                e.preventDefault();
+                premier.focus();
+            }
+        }
+        document.addEventListener('keydown', clavier);
+
+        // Si la langue change pendant que la modale est ouverte, on met à jour le nombre d'exemplaires
+        // (les autres textes ont l'attribut data-i18n : app.js les retraduit tout seul)
+        document.addEventListener('langchange', majCopies);
+
+        croix.addEventListener('click', () => fermer());
+        fermer2.addEventListener('click', () => fermer());
+        voile.addEventListener('click', (e) => { if (e.target === voile) fermer(); });
+
+        // "Comment emprunter" : ferme la modale puis descend vers la section des 3 étapes
+        comment.addEventListener('click', () => {
+            fermer(() => {
+                const section = document.getElementById('emprunter');
+                if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    }
+
+    // Un seul écouteur pour toutes les cartes (même celles créées plus tard)
+    grid.addEventListener('click', (e) => {
+        const carte = e.target.closest('.book-card');
+        if (!carte || !carte.dataset.id) return;      // les cartes "squelette" n'ont pas d'identifiant
+
+        const livre = state.books.find((b) => String(b.id) === carte.dataset.id);
+        if (livre) openBookModal(livre, carte.querySelector('.book-open'));
+    });
 
     /* ------------------------------------------------------------
        Chargement des livres avec fetch()
@@ -306,7 +497,7 @@
     if (pagerPrev) pagerPrev.addEventListener('click', () => goToPage(state.offset - PAGE_SIZE));
     if (pagerNext) pagerNext.addEventListener('click', () => goToPage(state.offset + PAGE_SIZE));
 
-    // Changement de langue : app.js a déjà retraduit les éléments data-i18n (badges, "Tous").
+    // Changement de langue : app.js a déjà retraduit les éléments data-i18n (pastilles, "Tous").
     // Il reste à retraduire le compteur et la pagination, qui contiennent des nombres.
     document.addEventListener('langchange', () => {
         renderCount();

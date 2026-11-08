@@ -1952,3 +1952,231 @@ body.modal-open { overflow: hidden; }   /* pas de défilement derrière une moda
     .step-text { padding-left: 14px; }
     .step-icon svg { width: 36px; height: 36px; }
 }
+
+/* ============================================================
+   16. CARTES DE LIVRES (style "couverture") ET FENÊTRE DE DÉTAILS
+   ============================================================ */
+:root { --font-serif: Georgia, 'Times New Roman', serif; }   /* police des titres de livres */
+
+/* Grille : 4 colonnes (3 sur tablette, 2 sur mobile) */
+.book-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 36px 24px;
+}
+
+/* La carte n'a plus de cadre : c'est la couverture qui fait la carte */
+.book-card {
+    display: block;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+    cursor: default;
+}
+.book-card[data-id] { cursor: pointer; }   /* seules les vraies cartes sont cliquables (pas les squelettes) */
+.book-card:hover { transform: none; box-shadow: none; }
+
+/* ----- La couverture : couleur, tranche à gauche, ombre portée ----- */
+.book-cover {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background-color: var(--cover, #9E3B2C);
+    /* léger dégradé pour donner du volume */
+    background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(0, 0, 0, 0.16));
+    border-radius: 4px 10px 10px 4px;       /* coins gauches droits (côté reliure) */
+    box-shadow: 0 14px 24px -12px rgba(0, 0, 0, 0.55), 0 2px 5px rgba(0, 0, 0, 0.18);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.book-card:hover .book-cover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 32px -14px rgba(0, 0, 0, 0.6), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+/* La tranche : bande plus claire sur le bord gauche */
+.book-cover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 9px;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.16) 55%, rgba(0, 0, 0, 0.06));
+    z-index: 1;
+    pointer-events: none;
+}
+.book-cover img { display: block; }
+
+/* Titre (en haut) et auteur (en bas) écrits sur une couverture sans image */
+.cover-title {
+    position: absolute;
+    top: 42px;                 /* sous la pastille de disponibilité */
+    left: 20px;
+    right: 16px;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+    line-height: 1.25;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.cover-author {
+    position: absolute;
+    left: 20px;
+    right: 14px;
+    bottom: 14px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Pastilles "Disponible" / "Emprunté" : fond clair pour rester lisibles sur toutes les couleurs */
+.book-cover .badge {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+.book-cover .badge-ok { color: #15803D; }
+.book-cover .badge-no { background: #FDECEE; color: #B4000C; }
+
+/* ----- Texte sous la couverture : catégorie, titre, auteur et année ----- */
+.book-info { padding: 14px 2px 0; }
+.book-cat {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--primary);
+}
+.book-info h3 {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    margin: 2px 0;
+}
+/* Le titre est un <button> qui ressemble à du texte */
+.book-open {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+}
+.book-open:hover { color: var(--primary); }
+.book-open:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+.book-sub { color: var(--text-muted); font-size: 0.85rem; }
+
+/* Squelettes pendant le chargement : même forme que les vraies cartes */
+.skeleton-cover {
+    aspect-ratio: 3 / 4;
+    border-radius: 4px 10px 10px 4px;
+}
+
+@media (max-width: 1000px) {
+    .book-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+    .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+}
+
+/* ----- Fenêtre (modale) de détails d'un livre ----- */
+.modal.modal-book {
+    position: relative;
+    width: min(780px, 100%);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;              /* défilement dans la modale si le résumé est long */
+    padding: 28px;
+}
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.modal-close:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+.modal-book-grid {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+.modal-book .book-cover { width: 100%; }
+.modal-book .cover-title { top: 24px; font-size: 1.3rem; }
+
+.modal-cat {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: rgba(211, 84, 0, 0.12);
+    border-radius: 999px;
+}
+.modal-book .modal-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    line-height: 1.2;
+    margin-bottom: 4px;
+    padding-right: 44px;           /* laisse la place à la croix */
+}
+.modal-author { color: var(--text-muted); font-size: 1.05rem; }
+.modal-meta { margin-top: 6px; color: var(--text-muted); font-size: 0.9rem; }
+.modal-meta strong { color: var(--text); }
+.modal-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+}
+.modal-sub {
+    margin-bottom: 6px;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+.modal-summary { margin-bottom: 16px; line-height: 1.65; white-space: pre-line; }
+.modal-hint {
+    padding: 12px 14px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    background: var(--surface-2);
+    border-radius: 12px;
+}
+.modal-actions-start {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: var(--space-4);
+}
+
+@media (max-width: 640px) {
+    .modal.modal-book { padding: 22px 18px; }
+    .modal-book-grid { grid-template-columns: 1fr; gap: 20px; }
+    .modal-book .book-cover { width: 160px; margin-inline: auto; }
+}
