@@ -60,7 +60,7 @@
             'catalogue.next': 'Suivant',
             'catalogue.page': 'Page {p} / {n}',
             'book.available': 'Disponible',
-            'book.unavailable': 'Indisponible',
+            'book.unavailable': 'Emprunté',
             'common.search': 'Rechercher',
             'aria.lang': 'Changer de langue',
             'aria.theme': 'Changer de thème',
@@ -134,7 +134,16 @@
             'steps.2.text': 'Le badge indique si au moins un exemplaire est disponible.',
             'steps.3.title': 'Empruntez',
             'steps.3.text': 'Présentez-vous à l’accueil de la bibliothèque : le bibliothécaire enregistre votre emprunt.',
-            'steps.cta': 'Commencer ma recherche'
+            'steps.cta': 'Commencer ma recherche',
+
+            // ----- Détails d'un livre (modale) -----
+            'book.copies': '{d} sur {s} exemplaire(s) disponible(s)',
+            'book.year': 'Année',
+            'book.summary': 'Résumé',
+            'book.nosummary': 'Aucun résumé disponible pour ce livre.',
+            'book.hint': 'Pour emprunter ce livre, présentez-vous à l’accueil de la bibliothèque : le bibliothécaire enregistrera votre emprunt.',
+            'book.howto': 'Comment emprunter',
+            'modal.close': 'Fermer'
         },
         en: {
             'nav.catalogue': 'Catalogue',
@@ -156,7 +165,7 @@
             'catalogue.next': 'Next',
             'catalogue.page': 'Page {p} / {n}',
             'book.available': 'Available',
-            'book.unavailable': 'Unavailable',
+            'book.unavailable': 'Borrowed',
             'common.search': 'Search',
             'aria.lang': 'Change language',
             'aria.theme': 'Change theme',
@@ -231,7 +240,16 @@
             'steps.2.text': 'The badge shows whether at least one copy is available.',
             'steps.3.title': 'Borrow',
             'steps.3.text': 'Visit the library desk: the librarian records your loan.',
-            'steps.cta': 'Start searching'
+            'steps.cta': 'Start searching',
+
+            // ----- Book details (modal) -----
+            'book.copies': '{d} of {s} copies available',
+            'book.year': 'Year',
+            'book.summary': 'Summary',
+            'book.nosummary': 'No summary available for this book.',
+            'book.hint': 'To borrow this book, visit the library desk: the librarian will record your loan.',
+            'book.howto': 'How to borrow',
+            'modal.close': 'Close'
         }
     };
 
