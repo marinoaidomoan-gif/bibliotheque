@@ -2180,3 +2180,242 @@ body.modal-open { overflow: hidden; }   /* pas de défilement derrière une moda
     .modal-book-grid { grid-template-columns: 1fr; gap: 20px; }
     .modal-book .book-cover { width: 160px; margin-inline: auto; }
 }
+
+/* ============================================================
+   17. PAGE LIVRES (refonte) — classes préfixées "lv-"
+   ============================================================ */
+
+/* ----- 4 cartes de chiffres ----- */
+.lv-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+.lv-stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+.lv-stat-ico {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(211, 84, 0, 0.12);
+    color: var(--primary);
+}
+.lv-stat-danger .lv-stat-ico { background: rgba(227, 0, 15, 0.12); color: var(--danger); }
+.lv-stat-danger .lv-stat-num { color: var(--danger); }
+.lv-stat-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+.lv-stat-label { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ----- Barre d'outils : recherche + bouton ----- */
+.lv-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.lv-search { position: relative; flex: 1; min-width: 230px; max-width: 440px; }
+.lv-search svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+.lv-search .input { padding-left: 42px; }
+.lv-pills { margin: 0 0 18px; }
+a.pill { text-decoration: none; }
+
+/* ----- Tableau ----- */
+.lv-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.lv-card-head { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.lv-card-head h2 { font-size: 1.05rem; }
+.lv-table-wrap { border: 0; border-radius: 0; }
+
+.lv-book { display: flex; align-items: center; gap: 12px; min-width: 230px; }
+.lv-thumb {
+    flex-shrink: 0;
+    width: 44px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    object-fit: cover;
+    border-radius: 3px 8px 8px 3px;      /* côté reliure à gauche */
+    background: var(--c, var(--surface-2));
+    color: #fff;
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.5);
+}
+.lv-title { display: block; }
+.lv-author { display: block; color: var(--text-muted); font-size: 0.85rem; }
+
+.lv-cat {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--primary);
+    background: rgba(211, 84, 0, 0.12);
+}
+
+/* Exemplaires : "2 / 3" et barre de remplissage */
+.lv-copies { min-width: 100px; }
+.lv-copies-txt { font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+.lv-bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.lv-bar span {
+    display: block;
+    height: 100%;
+    width: var(--w, 0%);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-soft));
+}
+.lv-bar.empty span { background: var(--danger); }
+
+/* Boutons-icônes (modifier, supprimer) */
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    display: inline-grid;
+    place-items: center;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+.icon-btn.danger:hover { border-color: var(--danger); color: var(--danger); background: rgba(227, 0, 15, 0.08); }
+
+/* ----- Fenêtre (dialog natif) du formulaire ----- */
+.lv-dialog {
+    width: min(820px, calc(100% - 24px));
+    max-width: none;
+    max-height: calc(100vh - 24px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    overflow: visible;
+}
+.lv-dialog::backdrop { background: rgba(0, 0, 0, 0.55); }   /* fond assombri (sans flou : plus rapide) */
+.lv-dialog[open] { animation: dlgIn 0.25s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes dlgIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+}
+
+.lv-dialog-inner {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 24px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+}
+.lv-dialog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+}
+.lv-dialog-head h2 { font-size: 1.25rem; }
+.lv-dialog-body { padding: 24px; overflow-y: auto; }   /* seul le corps défile, pas l'en-tête ni le pied */
+.lv-dialog-foot {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+}
+.lv-close {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.lv-close:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* Deux colonnes : couverture | champs */
+.lv-form-grid {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 28px;
+}
+.lv-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+    align-content: start;
+}
+.lv-fields .field-full { grid-column: 1 / -1; }
+
+/* Aperçu de la couverture */
+.lv-preview {
+    aspect-ratio: 3 / 4;
+    display: grid;
+    place-items: center;
+    margin-bottom: 12px;
+    overflow: hidden;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 2px dashed var(--border);
+    border-radius: 4px 12px 12px 4px;
+}
+.lv-preview img { width: 100%; height: 100%; object-fit: cover; }
+.lv-preview [hidden] { display: none !important; }
+.lv-file-btn { display: flex; width: 100%; cursor: pointer; }
+.lv-cover-col input:focus-visible + .lv-file-btn { outline: 2px solid var(--primary); outline-offset: 2px; }
+.lv-file-error { margin-top: 8px; color: var(--danger); font-size: 0.82rem; }
+
+/* ----- Responsive ----- */
+@media (max-width: 900px) {
+    .lv-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+    .lv-form-grid { grid-template-columns: 1fr; gap: 20px; }
+    .lv-cover-col { max-width: 190px; margin-inline: auto; width: 100%; }
+}
+@media (max-width: 560px) {
+    .lv-fields { grid-template-columns: 1fr; }
+    .lv-dialog-body { padding: 18px; }
+    .lv-toolbar .btn { width: 100%; }
+    .lv-search { max-width: none; }
+}
