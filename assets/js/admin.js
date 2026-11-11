@@ -10,8 +10,8 @@
 (function () {
     'use strict';
 
-    // Traduction fournie par app.js (si absent, on garde la clé)
-    function t(cle) { return window.App ? window.App.t(cle) : cle; }
+    // Traduction fournie par app.js (si absent, on garde la clé). "vars" : variables éventuelles.
+    function t(cle, vars) { return window.App ? window.App.t(cle, vars) : cle; }
 
     var reduireAnimations = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -134,8 +134,16 @@
         var message = form.getAttribute && form.getAttribute('data-confirm');
         if (!message) { return; }
 
+        // Message traduisible : data-confirm-i18n="clé" + data-confirm-vars='{"titre":"…"}'
+        var cle = form.getAttribute('data-confirm-i18n');
+        if (cle) {
+            var brut = form.getAttribute('data-confirm-vars');
+            try { message = t(cle, brut ? JSON.parse(brut) : undefined); }
+            catch (err) { /* on garde le texte français */ }
+        }
+
         e.preventDefault();   // on bloque l'envoi, le temps de demander confirmation
-        var danger = !!form.querySelector('.btn-danger');
+        var danger = !!form.querySelector('.btn-danger, .icon-btn.danger');
         // form.submit() envoie le formulaire sans repasser par cet écouteur
         confirmer(message, danger, function () { form.submit(); });
     });
@@ -220,5 +228,81 @@
         }
         n.textContent = '0';
         requestAnimationFrame(etape);
+    });
+
+    /* ------------------------------------------------------------
+       6. FENÊTRES <dialog> (formulaire d'ajout / modification)
+       - <button data-dialog-open="id"> ouvre la fenêtre
+       - <button data-dialog-close> la ferme (Échap et clic sur le fond aussi)
+       - <dialog data-autoopen> s'ouvre toute seule au chargement
+       - <dialog data-return="page.php"> : à la fermeture, on recharge cette page
+         (utile pour quitter le mode "?edit=ID" proprement)
+       ------------------------------------------------------------ */
+    function ouvrirDialog(d) {
+        if (d && typeof d.showModal === 'function' && !d.open) {
+            d.showModal();
+            document.body.classList.add('modal-open');   // bloque le défilement derrière
+        }
+    }
+
+    document.querySelectorAll('[data-dialog-open]').forEach(function (b) {
+        b.addEventListener('click', function () {
+            ouvrirDialog(document.getElementById(b.getAttribute('data-dialog-open')));
+        });
+    });
+
+    document.querySelectorAll('dialog').forEach(function (d) {
+        d.querySelectorAll('[data-dialog-close]').forEach(function (b) {
+            b.addEventListener('click', function () { d.close(); });
+        });
+
+        // Clic sur le fond sombre (en dehors de la boîte) : on ferme
+        d.addEventListener('click', function (e) { if (e.target === d) { d.close(); } });
+
+        d.addEventListener('close', function () {
+            document.body.classList.remove('modal-open');
+            var retour = d.getAttribute('data-return');
+            if (retour) { window.location.href = retour; }
+        });
+
+        if (d.hasAttribute('data-autoopen')) { ouvrirDialog(d); }
+    });
+
+    /* ------------------------------------------------------------
+       7. APERÇU DE LA COUVERTURE CHOISIE
+       <input type="file" data-preview="id_de_la_zone">
+       Vérifie le type et la taille (2 Mo) AVANT l'envoi ; le serveur revérifie quand même.
+       ------------------------------------------------------------ */
+    document.querySelectorAll('input[type="file"][data-preview]').forEach(function (champ) {
+        var zone = document.getElementById(champ.getAttribute('data-preview'));
+        if (!zone) { return; }
+        var img = zone.querySelector('img');
+        var vide = zone.querySelector('.lv-preview-empty');
+        var message = document.getElementById('cover-error');
+        var urlActuelle = null;   // adresse temporaire de l'image choisie (à libérer ensuite)
+
+        function erreur(cle) {
+            champ.value = '';   // on annule le choix
+            if (message) { message.textContent = t(cle); message.hidden = false; }
+        }
+
+        champ.addEventListener('change', function () {
+            if (message) { message.hidden = true; }
+            var fichier = champ.files && champ.files[0];
+            if (!fichier) { return; }
+
+            if (['image/jpeg', 'image/png', 'image/webp'].indexOf(fichier.type) === -1) {
+                erreur('lv.err.img_format'); return;
+            }
+            if (fichier.size > 2 * 1024 * 1024) {
+                erreur('lv.err.img_big'); return;
+            }
+
+            if (urlActuelle) { URL.revokeObjectURL(urlActuelle); }
+            urlActuelle = URL.createObjectURL(fichier);
+            img.src = urlActuelle;
+            img.hidden = false;
+            if (vide) { vide.hidden = true; }
+        });
     });
 })();

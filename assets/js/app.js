@@ -143,7 +143,63 @@
             'book.nosummary': 'Aucun résumé disponible pour ce livre.',
             'book.hint': 'Pour emprunter ce livre, présentez-vous à l’accueil de la bibliothèque : le bibliothécaire enregistrera votre emprunt.',
             'book.howto': 'Comment emprunter',
-            'modal.close': 'Fermer'
+            'modal.close': 'Fermer',
+
+            // ----- Page Livres (admin) -----
+            'lv.add': 'Ajouter un livre',
+            'lv.edit': 'Modifier le livre',
+            'lv.stat.titles': 'Titres',
+            'lv.stat.copies': 'Exemplaires',
+            'lv.stat.out': 'Actuellement empruntés',
+            'lv.stat.unavail': 'Titres indisponibles',
+            'lv.search': 'Filtrer par titre, auteur, catégorie…',
+            'lv.count_one': '{n} livre',
+            'lv.count_other': '{n} livres',
+            'lv.col.book': 'Livre',
+            'lv.col.category': 'Catégorie',
+            'lv.col.year': 'Année',
+            'lv.col.copies': 'Exemplaires',
+            'lv.col.status': 'Statut',
+            'lv.col.actions': 'Actions',
+            'lv.empty': 'Aucun livre pour le moment.',
+            'lv.empty_cat': 'Aucun livre dans cette catégorie.',
+            'lv.action.edit': 'Modifier',
+            'lv.action.delete': 'Supprimer',
+            'lv.confirm_delete': 'Supprimer définitivement « {titre} » ?',
+            'lv.f.title': 'Titre',
+            'lv.f.author': 'Auteur',
+            'lv.f.category': 'Catégorie',
+            'lv.f.year': 'Année de publication',
+            'lv.f.stock': 'Nombre d’exemplaires (stock)',
+            'lv.f.stock_hint': 'Nombre total d’exemplaires. La disponibilité est calculée automatiquement.',
+            'lv.f.summary': 'Résumé',
+            'lv.f.cover_pick': 'Choisir une image',
+            'lv.f.cover_hint': 'JPG, PNG ou WebP — 2 Mo maximum',
+            'lv.f.cover_remove': 'Retirer la couverture actuelle',
+            'lv.save_add': 'Ajouter le livre',
+            'lv.save_edit': 'Enregistrer les modifications',
+            'lv.err_head': 'Le formulaire contient des erreurs :',
+            'lv.err.title': 'Le titre est obligatoire (255 caractères maximum).',
+            'lv.err.author': 'L’auteur est obligatoire (190 caractères maximum).',
+            'lv.err.cat_len': 'La catégorie ne doit pas dépasser 100 caractères.',
+            'lv.err.summary_len': 'Le résumé ne doit pas dépasser 2000 caractères.',
+            'lv.err.year': 'L’année doit être comprise entre 1000 et {max}.',
+            'lv.err.stock': 'Le stock doit être un nombre entier entre 0 et 9999.',
+            'lv.err.notfound': 'Livre introuvable.',
+            'lv.err.stock_low': 'Le stock ne peut pas être inférieur au nombre d’exemplaires actuellement empruntés ({n}).',
+            'lv.err.img_big': 'La couverture dépasse 2 Mo.',
+            'lv.err.img_fail': 'L’envoi de la couverture a échoué. Réessayez.',
+            'lv.err.img_invalid': 'Fichier invalide.',
+            'lv.err.img_format': 'Format non autorisé : utilisez une image JPG, PNG ou WebP.',
+            'lv.err.img_notimg': 'Le fichier n’est pas une image valide.',
+            'lv.err.img_dir': 'Impossible de créer le dossier d’envoi.',
+            'lv.err.img_save': 'Impossible d’enregistrer la couverture.',
+            'lv.err.tech': 'Erreur technique : le livre n’a pas été enregistré.',
+            'lv.err.del_history': 'Suppression impossible : ce livre a un historique d’emprunts.',
+            'lv.err.del_fail': 'Suppression impossible pour le moment.',
+            'lv.ok.added': 'Livre ajouté.',
+            'lv.ok.edited': 'Livre modifié.',
+            'lv.ok.deleted': 'Livre supprimé.'
         },
         en: {
             'nav.catalogue': 'Catalogue',
@@ -249,7 +305,63 @@
             'book.nosummary': 'No summary available for this book.',
             'book.hint': 'To borrow this book, visit the library desk: the librarian will record your loan.',
             'book.howto': 'How to borrow',
-            'modal.close': 'Close'
+            'modal.close': 'Close',
+
+            // ----- Books page (admin) -----
+            'lv.add': 'Add a book',
+            'lv.edit': 'Edit book',
+            'lv.stat.titles': 'Titles',
+            'lv.stat.copies': 'Copies',
+            'lv.stat.out': 'Currently borrowed',
+            'lv.stat.unavail': 'Unavailable titles',
+            'lv.search': 'Filter by title, author, category…',
+            'lv.count_one': '{n} book',
+            'lv.count_other': '{n} books',
+            'lv.col.book': 'Book',
+            'lv.col.category': 'Category',
+            'lv.col.year': 'Year',
+            'lv.col.copies': 'Copies',
+            'lv.col.status': 'Status',
+            'lv.col.actions': 'Actions',
+            'lv.empty': 'No books yet.',
+            'lv.empty_cat': 'No books in this category.',
+            'lv.action.edit': 'Edit',
+            'lv.action.delete': 'Delete',
+            'lv.confirm_delete': 'Permanently delete “{titre}”?',
+            'lv.f.title': 'Title',
+            'lv.f.author': 'Author',
+            'lv.f.category': 'Category',
+            'lv.f.year': 'Publication year',
+            'lv.f.stock': 'Number of copies (stock)',
+            'lv.f.stock_hint': 'Total number of copies. Availability is calculated automatically.',
+            'lv.f.summary': 'Summary',
+            'lv.f.cover_pick': 'Choose an image',
+            'lv.f.cover_hint': 'JPG, PNG or WebP — 2 MB maximum',
+            'lv.f.cover_remove': 'Remove the current cover',
+            'lv.save_add': 'Add book',
+            'lv.save_edit': 'Save changes',
+            'lv.err_head': 'The form contains errors:',
+            'lv.err.title': 'The title is required (255 characters maximum).',
+            'lv.err.author': 'The author is required (190 characters maximum).',
+            'lv.err.cat_len': 'The category must not exceed 100 characters.',
+            'lv.err.summary_len': 'The summary must not exceed 2000 characters.',
+            'lv.err.year': 'The year must be between 1000 and {max}.',
+            'lv.err.stock': 'The stock must be a whole number between 0 and 9999.',
+            'lv.err.notfound': 'Book not found.',
+            'lv.err.stock_low': 'The stock cannot be lower than the number of copies currently borrowed ({n}).',
+            'lv.err.img_big': 'The cover is larger than 2 MB.',
+            'lv.err.img_fail': 'The cover upload failed. Please try again.',
+            'lv.err.img_invalid': 'Invalid file.',
+            'lv.err.img_format': 'Format not allowed: use a JPG, PNG or WebP image.',
+            'lv.err.img_notimg': 'The file is not a valid image.',
+            'lv.err.img_dir': 'Unable to create the upload folder.',
+            'lv.err.img_save': 'Unable to save the cover.',
+            'lv.err.tech': 'Technical error: the book was not saved.',
+            'lv.err.del_history': 'Cannot delete: this book has a loan history.',
+            'lv.err.del_fail': 'Unable to delete right now.',
+            'lv.ok.added': 'Book added.',
+            'lv.ok.edited': 'Book updated.',
+            'lv.ok.deleted': 'Book deleted.'
         }
     };
 
@@ -263,7 +375,7 @@
         var texte = (DICO[langue] && DICO[langue][cle]) || DICO.fr[cle] || cle;
         if (variables) {
             Object.keys(variables).forEach(function (nom) {
-                texte = texte.replace('{' + nom + '}', variables[nom]);
+                texte = texte.split('{' + nom + '}').join(String(variables[nom]));
             });
         }
         return texte;
@@ -275,9 +387,12 @@
         root.lang = langue;
         ecrire('lang', langue);
 
-        // Textes
+        // Textes (avec variables éventuelles : data-i18n-vars='{"n":3}')
         document.querySelectorAll('[data-i18n]').forEach(function (el) {
-            el.textContent = t(el.getAttribute('data-i18n'));
+            var vars = null;
+            var brut = el.getAttribute('data-i18n-vars');
+            if (brut) { try { vars = JSON.parse(brut); } catch (e) { vars = null; } }
+            el.textContent = t(el.getAttribute('data-i18n'), vars || undefined);
         });
         // Placeholders des champs
         document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
