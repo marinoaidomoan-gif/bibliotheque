@@ -2419,3 +2419,29 @@ a.pill { text-decoration: none; }
     .lv-toolbar .btn { width: 100%; }
     .lv-search { max-width: none; }
 }
+
+/* ============================================================
+   18. PAGE MEMBRES : avatar et petite fenêtre
+   (le reste réutilise les classes "lv-*" de la section 17)
+   ============================================================ */
+
+/* Avatar rond : initiale du nom sur fond coloré */
+.mb-avatar {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--c, var(--primary));
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+/* Fenêtre plus étroite que celle des livres (3 champs seulement) */
+.lv-dialog-sm { width: min(560px, calc(100% - 24px)); }
+
+/* Dans le tableau des membres, l'e-mail ne se coupe pas au milieu */
+#table-membres td:nth-child(2) { word-break: break-word; min-width: 180px; }
