@@ -2445,3 +2445,57 @@ a.pill { text-decoration: none; }
 
 /* Dans le tableau des membres, l'e-mail ne se coupe pas au milieu */
 #table-membres td:nth-child(2) { word-break: break-word; min-width: 180px; }
+
+/* ============================================================
+   19. PAGE EMPRUNTS : compteurs de pastilles, mentions de date, raccourcis
+   (le reste réutilise les classes "lv-*" et "mb-avatar")
+   ============================================================ */
+
+/* Petit compteur dans une pastille de filtre : "En retard 2" */
+.pill-n {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--surface-2);
+    color: var(--text-muted);
+}
+.pill.active .pill-n { background: rgba(255, 255, 255, 0.25); color: #fff; }
+.pill-n.danger { background: rgba(227, 0, 15, 0.12); color: var(--danger); }
+.pill.active .pill-n.danger { background: rgba(255, 255, 255, 0.25); color: #fff; }
+
+/* Mention sous la date prévue : "dans 3 j", "Aujourd'hui", "5 j de retard" */
+.ep-due {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+.ep-due.soon { color: var(--primary); font-weight: 600; }
+.ep-due.late { color: var(--danger); font-weight: 700; }
+
+/* Bouton "Valider le retour" avec son icône */
+.ep-return { white-space: nowrap; }
+
+/* Raccourcis de date (7, 14, 21, 30 jours) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+    padding: 6px 14px;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.chip:hover { border-color: var(--primary); color: var(--primary); }
+.chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* Colonnes dates : pas de retour à la ligne au milieu d'une date */
+#table-emprunts td:nth-child(3),
+#table-emprunts td:nth-child(4),
+#table-emprunts td:nth-child(5) { white-space: nowrap; }

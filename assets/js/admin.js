@@ -305,4 +305,47 @@
             if (vide) { vide.hidden = true; }
         });
     });
+
+        /* ------------------------------------------------------------
+       8. RACCOURCIS DE DATE (7, 14, 21, 30 jours)
+       <button data-add-days="14" data-target="id_du_champ_date">
+       La base de calcul est l'attribut min du champ (la date du jour donnée
+       par le serveur, fuseau du Bénin) ; à défaut, la date de l'ordinateur.
+       ------------------------------------------------------------ */
+    function deuxChiffres(n) { return (n < 10 ? '0' : '') + n; }
+
+    function ajouterJours(base, nbJours) {
+        var p = base.split('-');   // "2026-11-12" → ["2026", "11", "12"]
+        var d = new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10) + nbJours);
+        return d.getFullYear() + '-' + deuxChiffres(d.getMonth() + 1) + '-' + deuxChiffres(d.getDate());
+    }
+
+    document.querySelectorAll('input[type="date"]').forEach(function (champ) {
+        var boutons = document.querySelectorAll('[data-add-days][data-target="' + champ.id + '"]');
+        if (!boutons.length) { return; }
+
+        var aujourdhui = champ.getAttribute('min');
+        if (!aujourdhui) {
+            var maintenant = new Date();
+            aujourdhui = maintenant.getFullYear() + '-' + deuxChiffres(maintenant.getMonth() + 1) + '-' + deuxChiffres(maintenant.getDate());
+        }
+
+        // Met en évidence le raccourci qui correspond à la date choisie
+        function surligner() {
+            boutons.forEach(function (b) {
+                var egal = ajouterJours(aujourdhui, parseInt(b.getAttribute('data-add-days'), 10)) === champ.value;
+                b.classList.toggle('active', egal);
+            });
+        }
+
+        boutons.forEach(function (b) {
+            b.addEventListener('click', function () {
+                champ.value = ajouterJours(aujourdhui, parseInt(b.getAttribute('data-add-days'), 10));
+                surligner();
+            });
+        });
+        champ.addEventListener('input', surligner);
+        champ.addEventListener('change', surligner);
+        surligner();
+    });
 })();
