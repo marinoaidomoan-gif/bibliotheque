@@ -103,7 +103,7 @@ FROM livres l;
 -- Compte administrateur : admin@test.com / password123
 -- (le hash ci-dessous est un vrai hash bcrypt de "password123", compatible password_verify())
 INSERT INTO admins (nom, email, mot_de_passe) VALUES
-('Administrateur', 'admin@test.com',
+('Marino', 'admin@test.com',
  '$2y$10$9F/0SQbAalJeLdqvYMBjFOlrhXJs5qfR1hTq6eykNjWOctxOBI3tO');
 
 INSERT INTO livres (titre, auteur, categorie, annee, stock, resume) VALUES
